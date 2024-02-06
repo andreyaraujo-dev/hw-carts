@@ -10,6 +10,11 @@ async function getCarts(): Promise<Cart[]> {
   return data
 }
 
+export async function getFavoriteCarts(): Promise<Cart[]> {
+  const { data } = await api.get<Cart[]>('/cart')
+  return data.filter((cart) => cart.isFavorite)
+}
+
 export function useCarts(): UseQueryResult<Cart[], unknown> {
   return useQuery(['carts'], () => getCarts(), {
     staleTime: 1000 * 60 * 5 // 5 minutes

@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <main>
+    <main className="w-full">
       <div className="flex w-full h-full">
         <AsideMenu />
         <div className="flex-1 flex flex-col overflow-hidden">
