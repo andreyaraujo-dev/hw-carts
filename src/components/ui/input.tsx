@@ -1,25 +1,61 @@
-import * as React from "react"
+import * as React from 'react'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
+import { cva, type VariantProps } from 'class-variance-authority'
+
+const inputVariants = cva(
+  'p-2 text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none',
+  {
+    variants: {
+      variant: {
+        default: 'border border-input',
+        outline: 'border border-input',
+        error: 'border border-red-error bg-background focus:border-red-600'
+      },
+      size: {
+        default: 'w-full h-12 px-8 mt-2',
+        sm: 'h-9 px-3',
+        lg: 'h-11 px-8',
+        icon: 'h-10 w-10'
+      }
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default'
+    }
+  }
+)
+
+type InputPropsWithoutSize = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size'
+>
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends InputPropsWithoutSize,
+    VariantProps<typeof inputVariants> {
+  errorMessage?: string
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, variant, size, type, errorMessage, ...props }, ref) => {
     return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-          className
+      <div className="mb-4 w-full">
+        <input
+          type={type}
+          className={cn(inputVariants({ variant, size, className }))}
+          ref={ref}
+          {...props}
+        />
+        {errorMessage && (
+          <p className="block font-bold text-base p-2 text-red-error">
+            {errorMessage}
+          </p>
         )}
-        ref={ref}
-        {...props}
-      />
+      </div>
     )
   }
 )
-Input.displayName = "Input"
+Input.displayName = 'Input'
 
-export { Input }
+export { Input, inputVariants }
