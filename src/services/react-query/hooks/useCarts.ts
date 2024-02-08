@@ -1,5 +1,6 @@
 import { AddCartInput } from '@/@types/addCartInput'
 import { Cart } from '@/@types/carts'
+import { UpdateCartInput } from '@/@types/updateCartInput'
 import { createAxiosInstance } from '@/services/axios'
 import {
   UseQueryResult,
@@ -26,6 +27,39 @@ export async function addCart(data: AddCartInput): Promise<Cart> {
   return responseData
 }
 
+export async function updateCart(data: UpdateCartInput): Promise<Cart> {
+  const { data: responseData } = await api.patch<Cart>(
+    `/cart/${data._id}`,
+    data
+  )
+  return responseData
+}
+
+export async function getCartById(id: string): Promise<Cart> {
+  const { data } = await api.get<Cart>(`/cart/${id}`)
+  let dateFormatted: string | undefined
+  if (data.purchaseDate) {
+    const cutDate = new Date(data?.purchaseDate)
+      .toLocaleDateString('en', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      })
+      .replace(/\//g, '-')
+      .split('-')
+    dateFormatted = `${cutDate[2]}-${cutDate[0]}-${cutDate[1]}`
+  }
+  return {
+    ...data,
+    purchaseDate: dateFormatted
+  }
+}
+
+export async function deleteCart(id: string): Promise<Cart> {
+  const { data } = await api.delete<Cart>(`/cart/${id}`)
+  return data
+}
+
 export function useCarts(userEmail?: string): UseQueryResult<Cart[], unknown> {
   return useQuery(['carts', userEmail], () => getCarts(userEmail), {
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -46,9 +80,34 @@ export function useFavoritesCarts(
   )
 }
 
+export function useCartById(id: string): UseQueryResult<Cart, unknown> {
+  return useQuery(['getCartById', id], () => getCartById(id), {
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: !!id
+  })
+}
+
 export function useAddCart() {
   const client = useQueryClient()
   return useMutation(addCart, {
+    onSuccess: () => {
+      client.invalidateQueries(['carts', 'favoritesCarts'])
+    }
+  })
+}
+
+export function useUpdateCart() {
+  const client = useQueryClient()
+  return useMutation(updateCart, {
+    onSuccess: () => {
+      client.invalidateQueries(['carts', 'favoritesCarts'])
+    }
+  })
+}
+
+export function useDeleteCart() {
+  const client = useQueryClient()
+  return useMutation(deleteCart, {
     onSuccess: () => {
       client.invalidateQueries(['carts', 'favoritesCarts'])
     }

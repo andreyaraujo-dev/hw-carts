@@ -83,7 +83,7 @@ export default function Collection() {
                         {Intl.NumberFormat('pt-br', {
                           style: 'currency',
                           currency: 'BRL'
-                        }).format(cart.value)}
+                        }).format(cart.value as number)}
                       </TableCell>
                       <TableCell className="flex space-x-3">
                         <Link

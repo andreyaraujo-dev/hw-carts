@@ -2,7 +2,6 @@ import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { Slot } from '@radix-ui/react-slot'
 
 const inputVariants = cva('p-2 text-base font-medium transition-colors', {
   variants: {
@@ -33,14 +32,10 @@ type InputPropsWithoutSize = Omit<
 
 export interface InputProps
   extends InputPropsWithoutSize,
-    VariantProps<typeof inputVariants> {
-  errorMessage?: string
-  // asChild?: boolean
-}
+    VariantProps<typeof inputVariants> {}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant, size, type, errorMessage, ...props }, ref) => {
-    // const Comp = asChild ? Slot : 'input'
+  ({ className, variant, size, type, ...props }, ref) => {
     return (
       <div className="mb-4 w-full">
         <input
@@ -49,11 +44,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        {errorMessage && (
-          <p className="block font-bold text-base p-2 text-red-600">
-            {errorMessage}
-          </p>
-        )}
       </div>
     )
   }
