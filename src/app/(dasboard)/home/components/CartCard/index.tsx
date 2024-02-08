@@ -5,14 +5,14 @@ interface CartCardProps {
   imageURL: string
   model: string
   year: number
-  purchaseDate: string
+  purchaseDate?: string
   isFavorite?: boolean
 }
 
 export function CartCard({
   imageURL,
   model,
-  purchaseDate,
+  purchaseDate = 'Não informado',
   year,
   isFavorite
 }: CartCardProps) {
@@ -34,15 +34,15 @@ export function CartCard({
           )}
           <p>
             <strong>Modelo: </strong>
-            {model}
+            <span className="text-gray-400 font-medium">{model}</span>
           </p>
           <p>
             <strong>Ano: </strong>
-            {year}
+            <span className="text-gray-400 font-medium">{year}</span>
           </p>
           <p>
             <strong>Compra: </strong>
-            {purchaseDate}
+            <span className="text-gray-400 font-medium">{purchaseDate}</span>
           </p>
         </section>
       </CardContent>

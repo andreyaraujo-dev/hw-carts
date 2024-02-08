@@ -32,14 +32,14 @@ export default function Home() {
                 key={cart._id}
                 imageURL={imageURL}
                 model={cart.model}
-                purchaseDate={new Date(cart.purchaseDate).toLocaleDateString(
-                  'pt-BR',
-                  {
+                purchaseDate={
+                  cart.purchaseDate &&
+                  new Date(cart.purchaseDate).toLocaleDateString('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric'
-                  }
-                )}
+                  })
+                }
                 year={cart.year}
                 isFavorite={cart.isFavorite}
               />
@@ -61,14 +61,14 @@ export default function Home() {
                 key={cart._id}
                 imageURL={imageURL}
                 model={cart.model}
-                purchaseDate={new Date(cart.purchaseDate).toLocaleDateString(
-                  'pt-BR',
-                  {
+                purchaseDate={
+                  cart.purchaseDate &&
+                  new Date(cart.purchaseDate).toLocaleDateString('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric'
-                  }
-                )}
+                  })
+                }
                 year={cart.year}
                 isFavorite={cart.isFavorite}
               />
