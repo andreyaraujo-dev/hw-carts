@@ -6,9 +6,13 @@ import { useCarts } from '@/services/react-query/hooks/useCarts'
 import { CartCard } from '../home/components/CartCard'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 export default function Collection() {
-  const { data, isLoading } = useCarts()
+  const { data: session } = useSession()
+  const { data, isLoading } = useCarts(
+    session?.user?.email as string | undefined
+  )
   const imageURL =
     'https://i.pinimg.com/originals/ac/34/84/ac348422c1fd4d46f9a652f32839f8d6.jpg'
 

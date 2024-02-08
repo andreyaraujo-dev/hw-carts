@@ -55,7 +55,7 @@ export default function Home() {
         <div className="flex items-center w-full flex-wrap">
           {isLoading ? (
             <Skeleton className="w-96 m-2" />
-          ) : favorites && favorites?.length > 0 ? (
+          ) : data && data?.length > 0 ? (
             data?.map((cart) => (
               <CartCard
                 key={cart._id}

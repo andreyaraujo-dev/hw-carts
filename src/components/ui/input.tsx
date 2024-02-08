@@ -2,29 +2,29 @@ import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { Slot } from '@radix-ui/react-slot'
 
-const inputVariants = cva(
-  'p-2 text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none',
-  {
-    variants: {
-      variant: {
-        default: 'border border-input',
-        outline: 'border border-input',
-        error: 'border border-red-error bg-background focus:border-red-600'
-      },
-      size: {
-        default: 'w-full h-12 px-8 mt-2',
-        sm: 'h-9 px-3',
-        lg: 'h-11 px-8',
-        icon: 'h-10 w-10'
-      }
+const inputVariants = cva('p-2 text-base font-medium transition-colors', {
+  variants: {
+    variant: {
+      default:
+        'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+      outline: 'border border-input',
+      error:
+        'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-red-600 bg-background focus:border-red-600'
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default'
+    size: {
+      default: 'w-full h-12 px-3',
+      sm: 'h-9 px-3',
+      lg: 'h-11 px-8',
+      icon: 'h-10 w-10'
     }
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'default'
   }
-)
+})
 
 type InputPropsWithoutSize = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -35,10 +35,12 @@ export interface InputProps
   extends InputPropsWithoutSize,
     VariantProps<typeof inputVariants> {
   errorMessage?: string
+  // asChild?: boolean
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, variant, size, type, errorMessage, ...props }, ref) => {
+    // const Comp = asChild ? Slot : 'input'
     return (
       <div className="mb-4 w-full">
         <input
@@ -48,7 +50,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {errorMessage && (
-          <p className="block font-bold text-base p-2 text-red-error">
+          <p className="block font-bold text-base p-2 text-red-600">
             {errorMessage}
           </p>
         )}
