@@ -48,14 +48,12 @@ export default function AddCart() {
               <Input
                 type="text"
                 placeholder="Modelo"
-                errorMessage={errors.model?.message}
                 variant={errors.model ? 'error' : 'default'}
                 {...register('model')}
               />
               <Input
                 type="tel"
                 placeholder="Ano"
-                errorMessage={errors.year?.message}
                 variant={errors.year ? 'error' : 'default'}
                 {...register('year', {
                   setValueAs: (v) => {
@@ -68,7 +66,6 @@ export default function AddCart() {
               <Input
                 type="tel"
                 placeholder="Valor"
-                errorMessage={errors.value?.message}
                 variant={errors.value ? 'error' : 'default'}
                 {...register('value', {
                   setValueAs: (v) => {
@@ -82,7 +79,6 @@ export default function AddCart() {
               <Input
                 type="date"
                 placeholder="Data da compra"
-                errorMessage={errors.purchaseDate?.message}
                 variant={errors.purchaseDate ? 'error' : 'default'}
                 {...register('purchaseDate', {
                   setValueAs: (v) => {
@@ -130,7 +126,7 @@ export default function AddCart() {
           <Button
             onClick={() => router.back()}
             className="text-white font-medium text-base w-full"
-            variant="ghost"
+            variant="outline"
           >
             Cancelar
           </Button>

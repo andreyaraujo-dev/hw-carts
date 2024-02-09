@@ -15,6 +15,8 @@ import {
   useCartById,
   useUpdateCart
 } from '@/services/react-query/hooks/useCarts'
+import { format, addDays, subDays } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useEffect, useState } from 'react'
 import { Cart } from '@/@types/carts'
@@ -28,6 +30,14 @@ import {
 } from '@/components/ui/form'
 import { Checkbox } from '@/components/ui/checkbox'
 import { CheckedState } from '@radix-ui/react-checkbox'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
+import { CalendarIcon } from 'lucide-react'
+import { Calendar } from '@/components/ui/calendar'
 
 interface UpdateCartProps {
   params: { id: string }
@@ -83,12 +93,20 @@ export default function UpdateCart({ params }: UpdateCartProps) {
     })
   }
 
+  // TODO: corrigir data com um dia a menos
+  function handleChangeDate(date?: Date) {
+    setCart({
+      ...(cart as Cart),
+      purchaseDate: date?.toISOString()
+    })
+  }
+
   return (
     <Container>
       <h1 className="font-bold text-3xl mb-3">Adicionar Carrinho</h1>
 
       <Card className="w-full">
-        <CardContent className="p-3 flex flex-col space-y-4">
+        <CardContent className="w-full p-3 flex flex-col space-y-4">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleUpdateCart)}
@@ -107,13 +125,13 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                   </div>
                 </div>
               ) : (
-                <>
+                <div className="w-full flex flex-col space-y-4 p-3">
                   <div className="w-full flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
                     <FormField
                       control={form.control}
                       name="model"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-full">
                           <FormLabel>Modelo</FormLabel>
                           <FormControl>
                             <Input
@@ -137,7 +155,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                       control={form.control}
                       name="year"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-full">
                           <FormLabel>Ano</FormLabel>
                           <FormControl>
                             <Input
@@ -145,12 +163,6 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                               variant={
                                 form.formState.errors.year ? 'error' : 'default'
                               }
-                              // {...register('year', {
-                              //   setValueAs: (v) => {
-                              //     if (!v) return undefined
-                              //     return Number(v)
-                              //   },
-                              // })}
                               {...field}
                               value={cart?.year || ''}
                               onChange={handleChangeInputs}
@@ -165,7 +177,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                       control={form.control}
                       name="value"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-full">
                           <FormLabel>Valor</FormLabel>
                           <FormControl>
                             <Input
@@ -186,23 +198,65 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                     />
                   </div>
                   <div className="w-full flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
-                    {/* <Input
-                      type="date"
-                      placeholder="Data da compra"
-                      value={cart?.purchaseDate}
-                      errorMessage={errors.purchaseDate?.message}
-                      variant={errors.purchaseDate ? 'error' : 'default'}
-                      {...register('purchaseDate', {
-                        setValueAs: (v) => {
-                          if (!v) return undefined
-                          return new Date(v)
-                        },
-                        onChange: handleChangeInputs
-                      })}
+                    <FormField
+                      control={form.control}
+                      name="purchaseDate"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Data de compra</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={'outline'}
+                                  className={cn(
+                                    'w-full text-left font-normal h-12 px-3 py-2 text-base',
+                                    !cart?.purchaseDate &&
+                                      'text-muted-foreground'
+                                  )}
+                                >
+                                  {cart?.purchaseDate ? (
+                                    format(
+                                      new Date(cart?.purchaseDate),
+                                      'PPP',
+                                      {
+                                        locale: ptBR
+                                      }
+                                    )
+                                  ) : (
+                                    <span>Selecione uma data</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={
+                                  new Date(cart?.purchaseDate as string)
+                                }
+                                onSelect={handleChangeDate}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date('1900-01-01')
+                                }
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-
-                     */}
-                    {/* <Input type="file" placeholder="Imagem" /> */}
+                    <FormItem className="w-full">
+                      <FormLabel>Imagem do carro</FormLabel>
+                      <FormControl>
+                        <Input type="file" placeholder="Selecione uma imagem" />
+                      </FormControl>
+                    </FormItem>
                   </div>
                   <div className="w-full flex space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
                     <FormField
@@ -226,7 +280,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                       )}
                     />
                   </div>
-                </>
+                </div>
               )}
             </form>
           </Form>
@@ -246,7 +300,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
           <Button
             onClick={() => router.back()}
             className="text-white font-medium text-base w-full"
-            variant="ghost"
+            variant="outline"
           >
             Cancelar
           </Button>
