@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react'
 import { useAddCart } from '@/services/react-query/hooks/useCarts'
 import { AddCartInput } from '@/@types/addCartInput'
 import { Spinner } from '@/components/Loading/Spinner'
+import moment from 'moment-timezone'
 
 export default function AddCart() {
   const router = useRouter()
@@ -26,9 +27,13 @@ export default function AddCart() {
   const { mutateAsync: addCart, isLoading, error } = useAddCart()
 
   const handleRegisterCart: SubmitHandler<CartDataForm> = async (data) => {
+    const purchaseDate = data.purchaseDate
+      ? moment(data.purchaseDate).tz('America/Sap_Paulo').format('YYYY-MM-DD')
+      : undefined
     const cart: AddCartInput = {
       userEmail: String(session?.user?.email),
-      ...data
+      ...data,
+      purchaseDate
     }
     await addCart(cart)
     if (!error) router.push('/collection')

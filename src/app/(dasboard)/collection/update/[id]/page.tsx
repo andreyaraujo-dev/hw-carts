@@ -51,7 +51,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
       model: '',
       year: 0,
       value: 0,
-      purchaseDate: new Date(),
+      purchaseDate: new Date().toLocaleDateString('pt-BR'),
       imageUrl: '',
       isFavorite: false
     }

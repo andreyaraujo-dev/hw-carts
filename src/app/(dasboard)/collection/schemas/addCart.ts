@@ -7,7 +7,7 @@ export const cartDataFormSchema = z
       .min(1, { message: 'O modelo é obrigatório' }),
     value: z.number().optional(),
     year: z.number().optional(),
-    purchaseDate: z.coerce.date().optional(),
+    purchaseDate: z.string().optional(),
     imageUrl: z.string().optional(),
     isFavorite: z.boolean().optional().default(false)
   })
