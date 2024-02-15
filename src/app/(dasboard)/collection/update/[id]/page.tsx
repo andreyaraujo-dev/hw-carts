@@ -15,7 +15,7 @@ import {
   useCartById,
   useUpdateCart
 } from '@/services/react-query/hooks/useCarts'
-import { format, addDays, subDays } from 'date-fns'
+import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useEffect, useState } from 'react'
@@ -35,7 +35,7 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
+import { cn, formatDateToCalendarInput } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
 
@@ -43,18 +43,20 @@ interface UpdateCartProps {
   params: { id: string }
 }
 
+const defaultValues = {
+  model: '',
+  year: 0,
+  value: 0,
+  purchaseDate: new Date(),
+  imageUrl: '',
+  isFavorite: false
+}
+
 export default function UpdateCart({ params }: UpdateCartProps) {
   const router = useRouter()
   const form = useForm<CartDataForm>({
     resolver: zodResolver(cartDataFormSchema),
-    defaultValues: {
-      model: '',
-      year: 0,
-      value: 0,
-      purchaseDate: new Date().toLocaleDateString('pt-BR'),
-      imageUrl: '',
-      isFavorite: false
-    }
+    defaultValues
   })
   const { data: session } = useSession()
   const { data, isLoading: isLoadingCartData } = useCartById(params.id)
@@ -75,6 +77,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
       userEmail: String(session?.user?.email),
       ...data
     }
+
     await updateCart(cart)
     if (!error) router.push('/collection')
   }
@@ -93,11 +96,10 @@ export default function UpdateCart({ params }: UpdateCartProps) {
     })
   }
 
-  // TODO: corrigir data com um dia a menos
   function handleChangeDate(date?: Date) {
     setCart({
       ...(cart as Cart),
-      purchaseDate: date?.toISOString()
+      purchaseDate: formatDateToCalendarInput(date as Date)
     })
   }
 
@@ -217,7 +219,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                 >
                                   {cart?.purchaseDate ? (
                                     format(
-                                      new Date(cart?.purchaseDate),
+                                      new Date(cart?.purchaseDate as string),
                                       'PPP',
                                       {
                                         locale: ptBR
@@ -242,7 +244,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                 onSelect={handleChangeDate}
                                 disabled={(date) =>
                                   date > new Date() ||
-                                  date < new Date('1900-01-01')
+                                  date < new Date('1900-01-01T00:00:00')
                                 }
                               />
                             </PopoverContent>

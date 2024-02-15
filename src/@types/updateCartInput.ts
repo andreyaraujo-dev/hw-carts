@@ -4,7 +4,7 @@ export type UpdateCartInput = {
   model: string
   value?: number
   year?: number
-  purchaseDate?: string
+  purchaseDate?: Date
   imageUrl?: string
   isFavorite?: boolean
 }

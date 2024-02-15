@@ -27,14 +27,11 @@ export default function AddCart() {
   const { mutateAsync: addCart, isLoading, error } = useAddCart()
 
   const handleRegisterCart: SubmitHandler<CartDataForm> = async (data) => {
-    const purchaseDate = data.purchaseDate
-      ? moment(data.purchaseDate).tz('America/Sap_Paulo').format('YYYY-MM-DD')
-      : undefined
     const cart: AddCartInput = {
       userEmail: String(session?.user?.email),
-      ...data,
-      purchaseDate
+      ...data
     }
+
     await addCart(cart)
     if (!error) router.push('/collection')
   }
@@ -88,7 +85,7 @@ export default function AddCart() {
                 {...register('purchaseDate', {
                   setValueAs: (v) => {
                     if (!v) return undefined
-                    return new Date(v)
+                    return moment(v).toLocaleString()
                   }
                 })}
               />
