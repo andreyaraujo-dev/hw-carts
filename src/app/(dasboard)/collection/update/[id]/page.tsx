@@ -18,8 +18,7 @@ import {
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useEffect, useState } from 'react'
-import { Cart } from '@/@types/carts'
+import { useEffect } from 'react'
 import {
   Form,
   FormControl,
@@ -29,13 +28,12 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Checkbox } from '@/components/ui/checkbox'
-import { CheckedState } from '@radix-ui/react-checkbox'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-import { cn, formatDateToCalendarInput } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
 
@@ -56,20 +54,22 @@ export default function UpdateCart({ params }: UpdateCartProps) {
   const router = useRouter()
   const form = useForm<CartDataForm>({
     resolver: zodResolver(cartDataFormSchema),
-    defaultValues
+    defaultValues,
+    mode: 'onChange'
   })
   const { data: session } = useSession()
-  const { data, isLoading: isLoadingCartData } = useCartById(params.id)
+  const { data: cartData, isLoading: isLoadingCartData } = useCartById(
+    params.id
+  )
   const {
     mutateAsync: updateCart,
     isLoading: isLoadingUpdateCart,
     error
   } = useUpdateCart()
-  const [cart, setCart] = useState<Cart>()
 
   useEffect(() => {
-    if (!isLoadingCartData) setCart(data)
-  }, [isLoadingCartData, data])
+    if (!isLoadingCartData) form.reset(cartData)
+  }, [isLoadingCartData, cartData, form])
 
   const handleUpdateCart: SubmitHandler<CartDataForm> = async (data) => {
     const cart: UpdateCartInput = {
@@ -80,27 +80,6 @@ export default function UpdateCart({ params }: UpdateCartProps) {
 
     await updateCart(cart)
     if (!error) router.push('/collection')
-  }
-
-  function handleChangeInputs(e: React.ChangeEvent<HTMLInputElement>) {
-    setCart({
-      ...(cart as Cart),
-      [e.target.name]: e.target.value
-    })
-  }
-
-  function handleChangeCheckbox(checked: CheckedState) {
-    setCart({
-      ...(cart as Cart),
-      isFavorite: !!checked
-    })
-  }
-
-  function handleChangeDate(date?: Date) {
-    setCart({
-      ...(cart as Cart),
-      purchaseDate: formatDateToCalendarInput(date as Date)
-    })
   }
 
   return (
@@ -144,8 +123,10 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                   : 'default'
                               }
                               {...field}
-                              value={cart?.model || ''}
-                              onChange={handleChangeInputs}
+                              value={field.value}
+                              onChange={(event) =>
+                                field.onChange(event.target.value)
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -166,8 +147,10 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                 form.formState.errors.year ? 'error' : 'default'
                               }
                               {...field}
-                              value={cart?.year || ''}
-                              onChange={handleChangeInputs}
+                              value={field.value}
+                              onChange={(event) =>
+                                field.onChange(parseInt(event.target.value))
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -190,8 +173,10 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                   : 'default'
                               }
                               {...field}
-                              value={cart?.value || ''}
-                              onChange={handleChangeInputs}
+                              value={field.value}
+                              onChange={(event) =>
+                                field.onChange(parseFloat(event.target.value))
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -213,18 +198,14 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                   variant={'outline'}
                                   className={cn(
                                     'w-full text-left font-normal h-12 px-3 py-2 text-base',
-                                    !cart?.purchaseDate &&
+                                    !cartData?.purchaseDate &&
                                       'text-muted-foreground'
                                   )}
                                 >
-                                  {cart?.purchaseDate ? (
-                                    format(
-                                      new Date(cart?.purchaseDate as string),
-                                      'PPP',
-                                      {
-                                        locale: ptBR
-                                      }
-                                    )
+                                  {cartData?.purchaseDate ? (
+                                    format(field.value as Date, 'PPP', {
+                                      locale: ptBR
+                                    })
                                   ) : (
                                     <span>Selecione uma data</span>
                                   )}
@@ -238,10 +219,8 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                             >
                               <Calendar
                                 mode="single"
-                                selected={
-                                  new Date(cart?.purchaseDate as string)
-                                }
-                                onSelect={handleChangeDate}
+                                selected={field.value}
+                                onSelect={(event) => field.onChange(event)}
                                 disabled={(date) =>
                                   date > new Date() ||
                                   date < new Date('1900-01-01T00:00:00')
@@ -269,9 +248,9 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                           <FormControl>
                             <Checkbox
                               className="rounded-sm h-5 w-5 hover:cursor-pointer"
-                              checked={cart?.isFavorite}
-                              onCheckedChange={handleChangeCheckbox}
-                              defaultChecked={cart?.isFavorite}
+                              checked={field.value}
+                              onCheckedChange={(event) => field.onChange(event)}
+                              defaultChecked={field.value}
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">

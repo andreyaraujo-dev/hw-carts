@@ -38,7 +38,7 @@ export async function updateCart(data: UpdateCartInput): Promise<Cart> {
 
 export async function getCartById(id: string): Promise<Cart> {
   const { data } = await api.get<Cart>(`/cart/${id}`)
-  let dateFormatted: string | undefined
+  let dateFormatted: Date | undefined
   if (data.purchaseDate) {
     dateFormatted = formatDateToCalendarInput(data.purchaseDate)
   }
@@ -55,7 +55,7 @@ export async function deleteCart(id: string): Promise<Cart> {
 
 export function useCarts(userEmail?: string): UseQueryResult<Cart[], unknown> {
   return useQuery(['carts', userEmail], () => getCarts(userEmail), {
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    // staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!userEmail
   })
 }
@@ -67,7 +67,7 @@ export function useFavoritesCarts(
     ['favoritesCarts', userEmail],
     () => getFavoriteCarts(userEmail),
     {
-      staleTime: 1000 * 60 * 5, // 5 minutes
+      // staleTime: 1000 * 60 * 5, // 5 minutes
       enabled: !!userEmail
     }
   )
@@ -93,7 +93,7 @@ export function useUpdateCart() {
   const client = useQueryClient()
   return useMutation(updateCart, {
     onSuccess: () => {
-      client.invalidateQueries(['carts', 'favoritesCarts'])
+      client.invalidateQueries(['carts', 'favoritesCarts', 'getCartById'])
     }
   })
 }

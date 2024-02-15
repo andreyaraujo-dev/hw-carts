@@ -4,7 +4,7 @@ export type Cart = {
   model: string
   year?: number
   value?: number
-  purchaseDate?: string
+  purchaseDate?: Date
   isFavorite: boolean
   createdAt: Date
   updatedAt?: Date
