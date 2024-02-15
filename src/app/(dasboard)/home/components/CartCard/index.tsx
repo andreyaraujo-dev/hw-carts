@@ -4,7 +4,7 @@ import { Star } from 'lucide-react'
 interface CartCardProps {
   imageURL: string
   model: string
-  year: number
+  year?: number
   purchaseDate?: string
   isFavorite?: boolean
 }
@@ -38,7 +38,9 @@ export function CartCard({
           </p>
           <p>
             <strong>Ano: </strong>
-            <span className="text-gray-400 font-medium">{year}</span>
+            <span className="text-gray-400 font-medium">
+              {year || 'Não informado'}
+            </span>
           </p>
           <p>
             <strong>Compra: </strong>

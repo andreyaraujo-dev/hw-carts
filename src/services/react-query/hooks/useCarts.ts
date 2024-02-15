@@ -1,6 +1,7 @@
 import { AddCartInput } from '@/@types/addCartInput'
 import { Cart } from '@/@types/carts'
 import { UpdateCartInput } from '@/@types/updateCartInput'
+import { formatDateToCalendarInput } from '@/lib/utils'
 import { createAxiosInstance } from '@/services/axios'
 import {
   UseQueryResult,
@@ -37,17 +38,9 @@ export async function updateCart(data: UpdateCartInput): Promise<Cart> {
 
 export async function getCartById(id: string): Promise<Cart> {
   const { data } = await api.get<Cart>(`/cart/${id}`)
-  let dateFormatted: string | undefined
+  let dateFormatted: Date | undefined
   if (data.purchaseDate) {
-    const cutDate = new Date(data?.purchaseDate)
-      .toLocaleDateString('en', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      })
-      .replace(/\//g, '-')
-      .split('-')
-    dateFormatted = `${cutDate[2]}-${cutDate[0]}-${cutDate[1]}`
+    dateFormatted = formatDateToCalendarInput(data.purchaseDate)
   }
   return {
     ...data,
@@ -62,7 +55,7 @@ export async function deleteCart(id: string): Promise<Cart> {
 
 export function useCarts(userEmail?: string): UseQueryResult<Cart[], unknown> {
   return useQuery(['carts', userEmail], () => getCarts(userEmail), {
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    // staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!userEmail
   })
 }
@@ -74,7 +67,7 @@ export function useFavoritesCarts(
     ['favoritesCarts', userEmail],
     () => getFavoriteCarts(userEmail),
     {
-      staleTime: 1000 * 60 * 5, // 5 minutes
+      // staleTime: 1000 * 60 * 5, // 5 minutes
       enabled: !!userEmail
     }
   )
@@ -100,7 +93,7 @@ export function useUpdateCart() {
   const client = useQueryClient()
   return useMutation(updateCart, {
     onSuccess: () => {
-      client.invalidateQueries(['carts', 'favoritesCarts'])
+      client.invalidateQueries(['carts', 'favoritesCarts', 'getCartById'])
     }
   })
 }

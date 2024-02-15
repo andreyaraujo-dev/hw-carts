@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react'
 import { useAddCart } from '@/services/react-query/hooks/useCarts'
 import { AddCartInput } from '@/@types/addCartInput'
 import { Spinner } from '@/components/Loading/Spinner'
+import moment from 'moment-timezone'
 
 export default function AddCart() {
   const router = useRouter()
@@ -30,6 +31,7 @@ export default function AddCart() {
       userEmail: String(session?.user?.email),
       ...data
     }
+
     await addCart(cart)
     if (!error) router.push('/collection')
   }
@@ -83,7 +85,7 @@ export default function AddCart() {
                 {...register('purchaseDate', {
                   setValueAs: (v) => {
                     if (!v) return undefined
-                    return new Date(v)
+                    return moment(v).toLocaleString()
                   }
                 })}
               />
