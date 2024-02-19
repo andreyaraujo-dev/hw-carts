@@ -3,12 +3,8 @@ import { Cart } from '@/@types/carts'
 import { UpdateCartInput } from '@/@types/updateCartInput'
 import { formatDateToCalendarInput } from '@/lib/utils'
 import { createAxiosInstance } from '@/services/axios'
-import {
-  UseQueryResult,
-  useMutation,
-  useQuery,
-  useQueryClient
-} from 'react-query'
+import { UseQueryResult, useMutation, useQuery } from 'react-query'
+import { queryClient } from '../queryClient'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 const api = createAxiosInstance(apiUrl as string)
@@ -75,34 +71,31 @@ export function useFavoritesCarts(
 
 export function useCartById(id: string): UseQueryResult<Cart, unknown> {
   return useQuery(['getCartById', id], () => getCartById(id), {
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    // staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!id
   })
 }
 
 export function useAddCart() {
-  const client = useQueryClient()
   return useMutation(addCart, {
     onSuccess: () => {
-      client.invalidateQueries(['carts', 'favoritesCarts'])
+      queryClient.invalidateQueries(['carts', 'favoritesCarts'])
     }
   })
 }
 
 export function useUpdateCart() {
-  const client = useQueryClient()
   return useMutation(updateCart, {
     onSuccess: () => {
-      client.invalidateQueries(['carts', 'favoritesCarts', 'getCartById'])
+      queryClient.invalidateQueries(['carts', 'favoritesCarts', 'getCartById'])
     }
   })
 }
 
 export function useDeleteCart() {
-  const client = useQueryClient()
   return useMutation(deleteCart, {
     onSuccess: () => {
-      client.invalidateQueries(['carts', 'favoritesCarts'])
+      queryClient.invalidateQueries(['carts', 'favoritesCarts', 'getCartById'])
     }
   })
 }
