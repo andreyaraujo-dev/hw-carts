@@ -2,7 +2,7 @@
 
 import { Container } from '@/components/Container'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useCarts } from '@/services/react-query/hooks/useCarts'
+import { useCarts, useDeleteCart } from '@/services/react-query/hooks/useCarts'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -16,14 +16,46 @@ import {
 } from '@/components/ui/table'
 import { PenBox, Star, Trash2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import { Alertdialog } from '@/components/AlertDialog'
+import { useState } from 'react'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function Collection() {
+  const { toast } = useToast()
   const { data: session } = useSession()
-  const { data, isLoading } = useCarts(
-    session?.user?.email as string | undefined
-  )
-  const imageURL =
-    'https://i.pinimg.com/originals/ac/34/84/ac348422c1fd4d46f9a652f32839f8d6.jpg'
+  const {
+    data,
+    isLoading,
+    refetch: refetchCarts
+  } = useCarts(session?.user?.email as string | undefined)
+  const [openDialogDelete, setOpenDialogDelete] = useState(false)
+  const {
+    mutateAsync: deleteCart,
+    error,
+    isLoading: isLoadingDeleteCart
+  } = useDeleteCart()
+  const [idForDelete, setIdForDelete] = useState('')
+
+  async function handleDeleteCart() {
+    await deleteCart(idForDelete)
+    if (!error) {
+      setOpenDialogDelete(false)
+      refetchCarts()
+      setIdForDelete('')
+    } else {
+      toast({
+        title: 'Ops! Algo deu errado.',
+        description: 'Não foi possível deletar o registro, tente novamente.',
+        variant: 'destructive',
+        duration: 3000
+      })
+    }
+  }
+
+  function handleOpenDialogDelete(id: string) {
+    setIdForDelete(id)
+    setOpenDialogDelete(true)
+  }
 
   return (
     <Container>
@@ -95,7 +127,10 @@ export default function Collection() {
                           </Button>
                         </Link>
 
-                        <Button variant="outline">
+                        <Button
+                          variant="outline"
+                          onClick={() => handleOpenDialogDelete(cart._id)}
+                        >
                           <Trash2
                             size={20}
                             className="text-red-300 hover:cursor-pointer"
@@ -112,6 +147,15 @@ export default function Collection() {
           <p>Você não adicionou nenhum carro à sua coleção.</p>
         )}
       </div>
+
+      <Alertdialog
+        title="Deletar Carrinho"
+        description="Você tem certeza disso? Após a operação não será possível recuperar os dados."
+        onCancel={() => setOpenDialogDelete(false)}
+        onConfirm={() => handleDeleteCart()}
+        open={openDialogDelete}
+        isLoading={isLoadingDeleteCart}
+      />
     </Container>
   )
 }
