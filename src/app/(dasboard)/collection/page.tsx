@@ -17,12 +17,22 @@ import {
 import { PenBox, Star, Trash2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alertdialog } from '@/components/AlertDialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+import { Cart } from '@/@types/carts'
 
 export default function Collection() {
   const { toast } = useToast()
   const { data: session } = useSession()
+  const [carts, setCarts] = useState<Cart[] | []>()
+
   const {
     data,
     isLoading,
@@ -35,6 +45,10 @@ export default function Collection() {
     isLoading: isLoadingDeleteCart
   } = useDeleteCart()
   const [idForDelete, setIdForDelete] = useState('')
+
+  useEffect(() => {
+    if (!isLoading) setCarts(data)
+  }, [data, isLoading])
 
   async function handleDeleteCart() {
     await deleteCart(idForDelete)
@@ -57,12 +71,50 @@ export default function Collection() {
     setOpenDialogDelete(true)
   }
 
+  async function handleFilterData(type: string) {
+    let favorites
+    let allCarts
+    let nonFavorites
+    switch (type) {
+      case 'all':
+        allCarts = await refetchCarts()
+        setCarts(allCarts.data)
+        break
+      case 'favorites':
+        allCarts = await refetchCarts()
+        favorites = allCarts.data?.filter((cart) => cart.isFavorite)
+        setCarts(favorites)
+        break
+      case 'non-favorites':
+        allCarts = await refetchCarts()
+        nonFavorites = allCarts.data?.filter((cart) => !cart.isFavorite)
+        setCarts(nonFavorites)
+        break
+      default:
+        allCarts = await refetchCarts()
+        setCarts(allCarts.data)
+        break
+    }
+  }
+
   return (
     <Container>
-      <div className="w-full flex justify-between">
+      <div className="w-full">
         <span>
           <h1 className="font-bold text-3xl mb-3">Sua Coleção</h1>
         </span>
+      </div>
+      <div className="w-full flex justify-between">
+        <Select defaultValue="all" onValueChange={(e) => handleFilterData(e)}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Tipo de carros" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos</SelectItem>
+            <SelectItem value="favorites">Favoritos</SelectItem>
+            <SelectItem value="non-favorites">Não favoritos</SelectItem>
+          </SelectContent>
+        </Select>
 
         <Link href="/collection/add">
           <Button className="bg-blue-600 text-white font-medium text-base">
@@ -74,7 +126,7 @@ export default function Collection() {
       <div className="">
         {isLoading ? (
           <Skeleton className="w-96 m-2" />
-        ) : data && data?.length > 0 ? (
+        ) : carts && carts?.length > 0 ? (
           <Card>
             <CardContent className="p-0">
               <Table>
@@ -90,7 +142,7 @@ export default function Collection() {
                 </TableHeader>
 
                 <TableBody>
-                  {data?.map((cart) => (
+                  {carts?.map((cart) => (
                     <TableRow key={cart._id}>
                       <TableCell>
                         {cart.isFavorite && (

@@ -51,7 +51,6 @@ export async function deleteCart(id: string): Promise<Cart> {
 
 export function useCarts(userEmail?: string): UseQueryResult<Cart[], unknown> {
   return useQuery(['carts', userEmail], () => getCarts(userEmail), {
-    // staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!userEmail
   })
 }
