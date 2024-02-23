@@ -14,6 +14,16 @@ async function getCarts(userEmail?: string): Promise<Cart[]> {
   return data
 }
 
+export async function getCartsByModel(
+  model: string,
+  userEmail?: string
+): Promise<Cart[]> {
+  const { data } = await api.get<Cart[]>(
+    `/cart?userEmail=${userEmail}&model=${model}`
+  )
+  return data
+}
+
 export async function getFavoriteCarts(userEmail?: string): Promise<Cart[]> {
   const { data } = await api.get<Cart[]>(`/cart?userEmail=${userEmail}`)
   return data.filter((cart) => cart.isFavorite)

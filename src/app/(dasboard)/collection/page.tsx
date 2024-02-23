@@ -2,7 +2,11 @@
 
 import { Container } from '@/components/Container'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useCarts, useDeleteCart } from '@/services/react-query/hooks/useCarts'
+import {
+  getCartsByModel,
+  useCarts,
+  useDeleteCart
+} from '@/services/react-query/hooks/useCarts'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -14,7 +18,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { PenBox, Star, Trash2 } from 'lucide-react'
+import { PenBox, Search, Star, Trash2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alertdialog } from '@/components/AlertDialog'
 import { useEffect, useState } from 'react'
@@ -27,24 +31,42 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Cart } from '@/@types/carts'
+import { Input } from '@/components/ui/input'
+import { useForm } from 'react-hook-form'
+import { SearchCart, searchCartSchema } from './schemas/searchCart'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
+} from '@/components/ui/form'
+import { useQuery } from 'react-query'
+import { queryClient } from '@/services/react-query/queryClient'
 
 export default function Collection() {
   const { toast } = useToast()
   const { data: session } = useSession()
   const [carts, setCarts] = useState<Cart[] | []>()
+  const [idForDelete, setIdForDelete] = useState('')
+  const [openDialogDelete, setOpenDialogDelete] = useState(false)
 
   const {
     data,
     isLoading,
     refetch: refetchCarts
   } = useCarts(session?.user?.email as string | undefined)
-  const [openDialogDelete, setOpenDialogDelete] = useState(false)
   const {
     mutateAsync: deleteCart,
     error,
     isLoading: isLoadingDeleteCart
   } = useDeleteCart()
-  const [idForDelete, setIdForDelete] = useState('')
+  const searchForm = useForm<SearchCart>({
+    resolver: zodResolver(searchCartSchema),
+    defaultValues: { model: '' },
+    mode: 'onChange'
+  })
 
   useEffect(() => {
     if (!isLoading) setCarts(data)
@@ -97,6 +119,19 @@ export default function Collection() {
     }
   }
 
+  async function handleSubmitSearch(data: SearchCart) {
+    const cartsFiltered = await queryClient.fetchQuery('cartsByModel', {
+      queryFn: () => getCartsByModel(data.model, session?.user?.email as string)
+    })
+    setCarts(cartsFiltered)
+  }
+
+  async function handleClearFilters() {
+    searchForm.reset()
+    const allCarts = await refetchCarts()
+    setCarts(allCarts.data)
+  }
+
   return (
     <Container>
       <div className="w-full">
@@ -105,19 +140,71 @@ export default function Collection() {
         </span>
       </div>
       <div className="w-full flex justify-between">
-        <Select defaultValue="all" onValueChange={(e) => handleFilterData(e)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Tipo de carros" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="favorites">Favoritos</SelectItem>
-            <SelectItem value="non-favorites">Não favoritos</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex space-x-3">
+          <Form {...searchForm}>
+            <form
+              onSubmit={searchForm.handleSubmit(handleSubmitSearch)}
+              className="flex space-x-3 items-center justify-center"
+            >
+              <FormField
+                control={searchForm.control}
+                name="model"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="search"
+                        placeholder="Pesquisar por modelo"
+                        variant={
+                          searchForm.formState.errors.model
+                            ? 'error'
+                            : 'default'
+                        }
+                        {...field}
+                        value={field.value}
+                        onChange={(event) => field.onChange(event.target.value)}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                variant="default"
+                className="bg-blue-600 text-white py-2 px-4 h-12"
+                disabled={!searchForm.getValues('model')}
+              >
+                <Search size={15} />
+              </Button>
+            </form>
+          </Form>
+
+          <Select defaultValue="all" onValueChange={(e) => handleFilterData(e)}>
+            <SelectTrigger className="w-[180px] h-12">
+              <SelectValue placeholder="Tipo de carros" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos</SelectItem>
+              <SelectItem value="favorites">Favoritos</SelectItem>
+              <SelectItem value="non-favorites">Não favoritos</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Button
+            variant="secondary"
+            className="h-12 text-base"
+            type="button"
+            onClick={handleClearFilters}
+          >
+            Limpar filtros
+          </Button>
+        </div>
 
         <Link href="/collection/add">
-          <Button className="bg-blue-600 text-white font-medium text-base">
+          <Button
+            variant="default"
+            className="text-white font-medium text-base h-12"
+          >
             Adicionar
           </Button>
         </Link>
