@@ -35,14 +35,7 @@ import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { SearchCart, searchCartSchema } from './schemas/searchCart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage
-} from '@/components/ui/form'
-import { useQuery } from 'react-query'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { queryClient } from '@/services/react-query/queryClient'
 
 export default function Collection() {
@@ -51,6 +44,9 @@ export default function Collection() {
   const [carts, setCarts] = useState<Cart[] | []>()
   const [idForDelete, setIdForDelete] = useState('')
   const [openDialogDelete, setOpenDialogDelete] = useState(false)
+  const [typeFilter, setTypeFilter] = useState<
+    'all' | 'favorites' | 'non-favorites'
+  >('all')
 
   const {
     data,
@@ -99,20 +95,24 @@ export default function Collection() {
     let nonFavorites
     switch (type) {
       case 'all':
+        setTypeFilter('all')
         allCarts = await refetchCarts()
         setCarts(allCarts.data)
         break
       case 'favorites':
+        setTypeFilter('favorites')
         allCarts = await refetchCarts()
         favorites = allCarts.data?.filter((cart) => cart.isFavorite)
         setCarts(favorites)
         break
       case 'non-favorites':
+        setTypeFilter('non-favorites')
         allCarts = await refetchCarts()
         nonFavorites = allCarts.data?.filter((cart) => !cart.isFavorite)
         setCarts(nonFavorites)
         break
       default:
+        setTypeFilter('all')
         allCarts = await refetchCarts()
         setCarts(allCarts.data)
         break
@@ -128,8 +128,7 @@ export default function Collection() {
 
   async function handleClearFilters() {
     searchForm.reset()
-    const allCarts = await refetchCarts()
-    setCarts(allCarts.data)
+    handleFilterData('all')
   }
 
   return (
@@ -179,7 +178,7 @@ export default function Collection() {
             </form>
           </Form>
 
-          <Select defaultValue="all" onValueChange={(e) => handleFilterData(e)}>
+          <Select value={typeFilter} onValueChange={(e) => handleFilterData(e)}>
             <SelectTrigger className="w-[180px] h-12">
               <SelectValue placeholder="Tipo de carros" />
             </SelectTrigger>
