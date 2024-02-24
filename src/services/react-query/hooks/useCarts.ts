@@ -14,6 +14,16 @@ async function getCarts(userEmail?: string): Promise<Cart[]> {
   return data
 }
 
+export async function getCartsByModel(
+  model: string,
+  userEmail?: string
+): Promise<Cart[]> {
+  const { data } = await api.get<Cart[]>(
+    `/cart?userEmail=${userEmail}&model=${model}`
+  )
+  return data
+}
+
 export async function getFavoriteCarts(userEmail?: string): Promise<Cart[]> {
   const { data } = await api.get<Cart[]>(`/cart?userEmail=${userEmail}`)
   return data.filter((cart) => cart.isFavorite)
@@ -51,7 +61,6 @@ export async function deleteCart(id: string): Promise<Cart> {
 
 export function useCarts(userEmail?: string): UseQueryResult<Cart[], unknown> {
   return useQuery(['carts', userEmail], () => getCarts(userEmail), {
-    // staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!userEmail
   })
 }
