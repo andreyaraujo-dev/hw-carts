@@ -7,6 +7,7 @@ import {
 import { CartCard } from './components/CartCard'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSession } from 'next-auth/react'
+import { FavoritesCarts } from './components/FavoritesCarts'
 
 export default function Home() {
   const { data: session } = useSession()
@@ -24,29 +25,7 @@ export default function Home() {
       <div className="w-full">
         <h2 className="font-bold text-3xl mb-3">Favoritos</h2>
         <div className="flex items-center space-x-3 w-full flex-wrap">
-          {isLoadingFavorites ? (
-            <Skeleton className="w-96 m-2" />
-          ) : favorites && favorites?.length > 0 ? (
-            favorites?.map((cart) => (
-              <CartCard
-                key={cart._id}
-                imageURL={imageURL}
-                model={cart.model}
-                purchaseDate={
-                  cart.purchaseDate &&
-                  new Date(cart.purchaseDate).toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                  })
-                }
-                year={cart.year}
-                isFavorite={cart.isFavorite}
-              />
-            ))
-          ) : (
-            <p>Você não adicionou nenhum carro aos seus favoritos.</p>
-          )}
+          <FavoritesCarts isLoading={isLoadingFavorites} carts={favorites} />
         </div>
       </div>
 
