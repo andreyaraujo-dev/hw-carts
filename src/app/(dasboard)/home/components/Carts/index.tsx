@@ -4,7 +4,7 @@ import { CartCard } from '../CartCard'
 import { useEffect, useState } from 'react'
 import { Card } from '@/components/ui/card'
 
-interface FavoritesCartsProps {
+interface CartsProps {
   isLoading: boolean
   carts?: Cart[]
 }
@@ -12,7 +12,7 @@ interface FavoritesCartsProps {
 const imageURL =
   'https://i.pinimg.com/originals/ac/34/84/ac348422c1fd4d46f9a652f32839f8d6.jpg'
 
-export function FavoritesCarts({ isLoading, carts }: FavoritesCartsProps) {
+export function Carts({ isLoading, carts }: CartsProps) {
   const [filteredCarts, setFilteredCarts] = useState<Cart[] | undefined>([])
 
   function handleFilterCarts() {
@@ -50,12 +50,12 @@ export function FavoritesCarts({ isLoading, carts }: FavoritesCartsProps) {
               isFavorite={cart.isFavorite}
             />
           ))}
-          <Card className="w-96 h-28 hover:cursor-pointer hover:bg-slate-900 transition-all m-2 flex items-center justify-center text-base">
+          <Card className="w-80 h-24 hover:cursor-pointer hover:bg-slate-900 transition-all flex items-center justify-center text-base">
             <p>Ver mais</p>
           </Card>
         </>
       ) : (
-        <p>Você não adicionou nenhum carro aos seus favoritos.</p>
+        <p>Nenhum carro para mostrar aqui.</p>
       )}
     </>
   )
