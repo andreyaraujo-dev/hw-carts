@@ -1,7 +1,7 @@
 export type AddCartInput = {
   userEmail: string
   model: string
-  value?: number
+  value?: string
   year?: number
   purchaseDate?: Date
   imageUrl?: string

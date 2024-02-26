@@ -31,6 +31,7 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Checkbox } from '@/components/ui/checkbox'
+import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
 
 const defaultValues = {
   model: '',
@@ -138,6 +139,11 @@ export default function AddCart() {
                           }
                           {...field}
                           value={field.value || ''}
+                          onKeyUp={(event) =>
+                            field.onChange(
+                              formatCurrencyOnKeyUp(event.currentTarget.value)
+                            )
+                          }
                           onChange={(event) =>
                             field.onChange(event.target.value)
                           }

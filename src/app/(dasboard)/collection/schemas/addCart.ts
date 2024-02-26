@@ -9,7 +9,7 @@ export const cartDataFormSchema = z
       .string()
       .transform((val) => {
         if (val !== '' || val !== undefined) {
-          return parseFloat(val.replace('.', '').replace(',', '.'))
+          return parseFloat(val.replace('.', '').replace(',', '.')).toString()
         }
         return val
       })

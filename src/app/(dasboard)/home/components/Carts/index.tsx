@@ -3,16 +3,18 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { CartCard } from '../CartCard'
 import { useEffect, useState } from 'react'
 import { Card } from '@/components/ui/card'
+import Link from 'next/link'
 
 interface CartsProps {
   isLoading: boolean
   carts?: Cart[]
+  pageToRedirect: string
 }
 
 const imageURL =
   'https://i.pinimg.com/originals/ac/34/84/ac348422c1fd4d46f9a652f32839f8d6.jpg'
 
-export function Carts({ isLoading, carts }: CartsProps) {
+export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
   const [filteredCarts, setFilteredCarts] = useState<Cart[] | undefined>([])
 
   function handleFilterCarts() {
@@ -50,9 +52,11 @@ export function Carts({ isLoading, carts }: CartsProps) {
               isFavorite={cart.isFavorite}
             />
           ))}
-          <Card className="w-80 h-24 hover:cursor-pointer hover:bg-slate-900 transition-all flex items-center justify-center text-base">
-            <p>Ver mais</p>
-          </Card>
+          <Link href={pageToRedirect}>
+            <Card className="w-80 h-24 hover:cursor-pointer hover:bg-slate-900 transition-all flex items-center justify-center text-base">
+              <p>Ver mais</p>
+            </Card>
+          </Link>
         </>
       ) : (
         <p>Nenhum carro para mostrar aqui.</p>

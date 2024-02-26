@@ -21,14 +21,22 @@ export default function Home() {
       <div className="w-full">
         <h2 className="font-bold text-3xl mb-3">Favoritos</h2>
         <div className="w-full grid grid-cols-3 gap-3">
-          <Carts isLoading={isLoadingFavorites} carts={favorites} />
+          <Carts
+            isLoading={isLoadingFavorites}
+            carts={favorites}
+            pageToRedirect="/collection"
+          />
         </div>
       </div>
 
       <div className="w-full">
         <h2 className="font-bold text-3xl mb-3">Coleção</h2>
         <div className="w-full grid grid-cols-3 gap-3">
-          <Carts isLoading={isLoading} carts={data} />
+          <Carts
+            isLoading={isLoading}
+            carts={data}
+            pageToRedirect="/collection"
+          />
         </div>
       </div>
     </div>

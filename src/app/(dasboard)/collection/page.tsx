@@ -209,7 +209,7 @@ export default function Collection() {
         </Link>
       </div>
 
-      <div className="">
+      <div className="pb-4">
         {isLoading ? (
           <Skeleton className="w-96 m-2" />
         ) : carts && carts?.length > 0 ? (
@@ -253,7 +253,7 @@ export default function Collection() {
                         {Intl.NumberFormat('pt-br', {
                           style: 'currency',
                           currency: 'BRL'
-                        }).format(cart.value as number)}
+                        }).format(cart.value as unknown as number)}
                       </TableCell>
                       <TableCell className="flex space-x-3">
                         <Link
