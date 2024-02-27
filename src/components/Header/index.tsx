@@ -10,7 +10,6 @@ import {
   SheetTrigger
 } from '../ui/sheet'
 import { MenuIcon } from 'lucide-react'
-import { Button } from '../ui/button'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -32,13 +31,12 @@ export function Header() {
 
         <Sheet open={open} onOpenChange={() => setOpen(!open)}>
           <SheetTrigger className="md:hidden">
-            <Button
-              variant="outline"
-              className="px-2"
+            <div
+              className="p-2 border rounded-md hover:bg-slate-900 transition-all duration-300 hover:cursor-pointer"
               onClick={() => setOpen(true)}
             >
               <MenuIcon size={24} />
-            </Button>
+            </div>
           </SheetTrigger>
           <SheetContent>
             <SheetHeader className="mb-10">
