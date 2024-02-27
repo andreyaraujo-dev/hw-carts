@@ -30,7 +30,7 @@ export function Header() {
       <div className="md:hidden flex justify-between w-full items-center">
         <span className="font-bold text-2xl text-blue-800">HW CARTS</span>
 
-        <Sheet open={open}>
+        <Sheet open={open} onOpenChange={() => setOpen(!open)}>
           <SheetTrigger className="md:hidden">
             <Button
               variant="outline"
