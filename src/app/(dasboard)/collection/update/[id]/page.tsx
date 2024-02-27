@@ -36,6 +36,7 @@ import {
 import { cn } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
+import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
 
 interface UpdateCartProps {
   params: { id: string }
@@ -43,8 +44,8 @@ interface UpdateCartProps {
 
 const defaultValues = {
   model: '',
-  year: 0,
-  value: 0,
+  year: undefined,
+  value: undefined,
   purchaseDate: new Date(),
   imageUrl: '',
   isFavorite: false
@@ -149,7 +150,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                               {...field}
                               value={field.value}
                               onChange={(event) =>
-                                field.onChange(parseInt(event.target.value))
+                                field.onChange(Number(event.target.value))
                               }
                             />
                           </FormControl>
@@ -174,8 +175,15 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                               }
                               {...field}
                               value={field.value}
+                              onKeyUp={(event) =>
+                                field.onChange(
+                                  formatCurrencyOnKeyUp(
+                                    event.currentTarget.value
+                                  )
+                                )
+                              }
                               onChange={(event) =>
-                                field.onChange(parseFloat(event.target.value))
+                                field.onChange(event.target.value)
                               }
                             />
                           </FormControl>

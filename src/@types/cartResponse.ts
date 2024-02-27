@@ -1,9 +1,9 @@
-export type Cart = {
+export type CartResponse = {
   _id: string
   imageURL?: string
   model: string
   year?: number
-  value?: string
+  value?: number
   purchaseDate?: Date
   isFavorite: boolean
   createdAt: Date

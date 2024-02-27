@@ -12,16 +12,42 @@ import { useSession } from 'next-auth/react'
 import { useAddCart } from '@/services/react-query/hooks/useCarts'
 import { AddCartInput } from '@/@types/addCartInput'
 import { Spinner } from '@/components/Loading/Spinner'
-import moment from 'moment-timezone'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form'
+import { CalendarIcon } from 'lucide-react'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
+import { cn } from '@/lib/utils'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { Checkbox } from '@/components/ui/checkbox'
+import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
+
+const defaultValues = {
+  model: '',
+  year: undefined,
+  value: undefined,
+  purchaseDate: undefined,
+  imageUrl: undefined,
+  isFavorite: false
+}
 
 export default function AddCart() {
   const router = useRouter()
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<CartDataForm>({
-    resolver: zodResolver(cartDataFormSchema)
+  const form = useForm<CartDataForm>({
+    resolver: zodResolver(cartDataFormSchema),
+    defaultValues,
+    mode: 'onChange'
   })
   const { data: session } = useSession()
   const { mutateAsync: addCart, isLoading, error } = useAddCart()
@@ -42,78 +68,166 @@ export default function AddCart() {
 
       <Card className="w-full">
         <CardContent className="p-3 flex flex-col space-y-4">
-          <form
-            onSubmit={handleSubmit(handleRegisterCart)}
-            id="form-register-cart"
-          >
-            <div className="w-full flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
-              <Input
-                type="text"
-                placeholder="Modelo"
-                variant={errors.model ? 'error' : 'default'}
-                {...register('model')}
-              />
-              <Input
-                type="tel"
-                placeholder="Ano"
-                variant={errors.year ? 'error' : 'default'}
-                {...register('year', {
-                  setValueAs: (v) => {
-                    if (!v) return undefined
-                    return Number(v)
-                  }
-                })}
-              />
-
-              <Input
-                type="tel"
-                placeholder="Valor"
-                variant={errors.value ? 'error' : 'default'}
-                {...register('value', {
-                  setValueAs: (v) => {
-                    if (!v) return undefined
-                    return Number(v)
-                  }
-                })}
-              />
-            </div>
-            <div className="w-full flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
-              <Input
-                type="date"
-                placeholder="Data da compra"
-                variant={errors.purchaseDate ? 'error' : 'default'}
-                {...register('purchaseDate', {
-                  setValueAs: (v) => {
-                    if (!v) return undefined
-                    return moment(v).toLocaleString()
-                  }
-                })}
-              />
-
-              <Input type="file" placeholder="Imagem" />
-            </div>
-            <div className="w-full flex space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="isFavorite"
-                  {...register('isFavorite', {
-                    setValueAs: (v) => {
-                      if (!v) return false
-                      return true
-                    }
-                  })}
-                  className="rounded-md h-4 w-4 hover:cursor-pointer"
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleRegisterCart)}
+              id="form-register-cart"
+            >
+              <div className="w-full flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
+                <FormField
+                  control={form.control}
+                  name="model"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Modelo</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Digite o modelo do carro"
+                          variant={
+                            form.formState.errors.model ? 'error' : 'default'
+                          }
+                          {...field}
+                          value={field.value}
+                          onChange={(event) =>
+                            field.onChange(event.target.value)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <label
-                  htmlFor="isFavorite"
-                  className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:cursor-pointer"
-                >
-                  Adicionar aos favoritos
-                </label>
+
+                <FormField
+                  control={form.control}
+                  name="year"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Ano</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          placeholder="Digite o ano do carro"
+                          variant={
+                            form.formState.errors.year ? 'error' : 'default'
+                          }
+                          {...field}
+                          value={field.value || ''}
+                          onChange={(event) =>
+                            field.onChange(Number(event.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="value"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Valor</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          placeholder="Digite o valor de compra do carro"
+                          variant={
+                            form.formState.errors.value ? 'error' : 'default'
+                          }
+                          {...field}
+                          value={field.value || ''}
+                          onKeyUp={(event) =>
+                            field.onChange(
+                              formatCurrencyOnKeyUp(event.currentTarget.value)
+                            )
+                          }
+                          onChange={(event) =>
+                            field.onChange(event.target.value)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-            </div>
-          </form>
+              <div className="w-full flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
+                <FormField
+                  control={form.control}
+                  name="purchaseDate"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Data de compra</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={'outline'}
+                              className={cn(
+                                'w-full text-left font-normal h-12 px-3 py-2 text-base',
+                                !field.value && 'text-muted-foreground'
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value as Date, 'PPP', {
+                                  locale: ptBR
+                                })
+                              ) : (
+                                <span>Selecione uma data</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={(event) => field.onChange(event)}
+                            disabled={(date) =>
+                              date > new Date() ||
+                              date < new Date('1900-01-01T00:00:00')
+                            }
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormItem className="w-full">
+                  <FormLabel>Imagem do carro</FormLabel>
+                  <FormControl>
+                    <Input type="file" placeholder="Selecione uma imagem" />
+                  </FormControl>
+                </FormItem>
+              </div>
+              <div className="w-full flex space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
+                <FormField
+                  control={form.control}
+                  name="isFavorite"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 space-y-0 py-3 rounded-md">
+                      <FormControl>
+                        <Checkbox
+                          className="rounded-sm h-5 w-5 hover:cursor-pointer"
+                          checked={field.value}
+                          onCheckedChange={(event) => field.onChange(event)}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>Adicionar aos favoritos</FormLabel>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </form>
+          </Form>
         </CardContent>
         <CardFooter className="p-3 flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
           <Button

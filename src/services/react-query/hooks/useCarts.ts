@@ -5,12 +5,24 @@ import { formatDateToCalendarInput } from '@/lib/utils'
 import { createAxiosInstance } from '@/services/axios'
 import { UseQueryResult, useMutation, useQuery } from 'react-query'
 import { queryClient } from '../queryClient'
+import { formatCurrency } from '@/utils/functions'
+import { CartResponse } from '@/@types/cartResponse'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 const api = createAxiosInstance(apiUrl as string)
 
 async function getCarts(userEmail?: string): Promise<Cart[]> {
   const { data } = await api.get<Cart[]>(`/cart?userEmail=${userEmail}`)
+  return data
+}
+
+export async function getCartsByModel(
+  model: string,
+  userEmail?: string
+): Promise<Cart[]> {
+  const { data } = await api.get<Cart[]>(
+    `/cart?userEmail=${userEmail}&model=${model}`
+  )
   return data
 }
 
@@ -33,14 +45,19 @@ export async function updateCart(data: UpdateCartInput): Promise<Cart> {
 }
 
 export async function getCartById(id: string): Promise<Cart> {
-  const { data } = await api.get<Cart>(`/cart/${id}`)
+  const { data } = await api.get<CartResponse>(`/cart/${id}`)
   let dateFormatted: Date | undefined
+  let valueFormatted: string | undefined
   if (data.purchaseDate) {
     dateFormatted = formatDateToCalendarInput(data.purchaseDate)
   }
+  if (data.value) {
+    valueFormatted = formatCurrency(data.value)
+  }
   return {
     ...data,
-    purchaseDate: dateFormatted
+    purchaseDate: dateFormatted,
+    value: valueFormatted
   }
 }
 
@@ -51,7 +68,6 @@ export async function deleteCart(id: string): Promise<Cart> {
 
 export function useCarts(userEmail?: string): UseQueryResult<Cart[], unknown> {
   return useQuery(['carts', userEmail], () => getCarts(userEmail), {
-    // staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!userEmail
   })
 }

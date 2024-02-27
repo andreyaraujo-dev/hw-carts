@@ -16,11 +16,6 @@ export function AsideMenu() {
             Coleção
           </li>
         </Link>
-        <Link href="/favorites">
-          <li className="hover:bg-slate-900 transition-all duration-300 rounded-md p-2 hover:cursor-pointer">
-            Favoritos
-          </li>
-        </Link>
       </ul>
     </aside>
   )
