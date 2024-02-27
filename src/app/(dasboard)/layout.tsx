@@ -1,4 +1,5 @@
 import { AsideMenu } from '@/components/AsideMenu'
+import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 
 export default function RootLayout({
@@ -15,6 +16,7 @@ export default function RootLayout({
           <div className="flex-1 overflow-x-hidden overflow-y-auto">
             {children}
           </div>
+          <Footer />
         </div>
       </div>
     </main>
