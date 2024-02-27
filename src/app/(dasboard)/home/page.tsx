@@ -20,7 +20,7 @@ export default function Home() {
     <div className="flex w-full h-full p-6 flex-col space-y-5">
       <div className="w-full">
         <h2 className="font-bold text-3xl mb-3">Favoritos</h2>
-        <div className="w-full grid grid-cols-3 gap-3">
+        <div className="w-full md:max-w-5xl grid grid-flow-col auto-cols-max md:grid-flow-row-dense md:grid-cols-3 gap-3 overflow-x-auto pb-3">
           <Carts
             isLoading={isLoadingFavorites}
             carts={favorites}
@@ -31,7 +31,7 @@ export default function Home() {
 
       <div className="w-full">
         <h2 className="font-bold text-3xl mb-3">Coleção</h2>
-        <div className="w-full grid grid-cols-3 gap-3">
+        <div className="w-full md:max-w-5xl grid grid-flow-col auto-cols-max md:grid-flow-row-dense md:grid-cols-3 gap-3 overflow-x-auto pb-3">
           <Carts
             isLoading={isLoading}
             carts={data}
