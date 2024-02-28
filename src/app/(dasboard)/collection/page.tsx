@@ -138,18 +138,29 @@ export default function Collection() {
           <h1 className="font-bold text-3xl mb-3">Sua Coleção</h1>
         </span>
       </div>
-      <div className="w-full flex justify-between">
-        <div className="flex space-x-3">
+      <div className="w-full flex md:justify-between md:flex-row flex-col space-y-3 md:space-y-0">
+        <div className="flex md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
+          <Select value={typeFilter} onValueChange={(e) => handleFilterData(e)}>
+            <SelectTrigger className="w-full md:w-[180px] h-12">
+              <SelectValue placeholder="Tipo de carros" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos</SelectItem>
+              <SelectItem value="favorites">Favoritos</SelectItem>
+              <SelectItem value="non-favorites">Não favoritos</SelectItem>
+            </SelectContent>
+          </Select>
+
           <Form {...searchForm}>
             <form
               onSubmit={searchForm.handleSubmit(handleSubmitSearch)}
-              className="flex space-x-3 items-center justify-center"
+              className="flex space-x-3 items-center md:justify-center"
             >
               <FormField
                 control={searchForm.control}
                 name="model"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full">
                     <FormControl>
                       <Input
                         type="search"
@@ -178,17 +189,6 @@ export default function Collection() {
             </form>
           </Form>
 
-          <Select value={typeFilter} onValueChange={(e) => handleFilterData(e)}>
-            <SelectTrigger className="w-[180px] h-12">
-              <SelectValue placeholder="Tipo de carros" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos</SelectItem>
-              <SelectItem value="favorites">Favoritos</SelectItem>
-              <SelectItem value="non-favorites">Não favoritos</SelectItem>
-            </SelectContent>
-          </Select>
-
           <Button
             variant="secondary"
             className="h-12 text-base"
@@ -202,7 +202,7 @@ export default function Collection() {
         <Link href="/collection/add">
           <Button
             variant="default"
-            className="text-white font-medium text-base h-12"
+            className="text-white font-medium text-base h-12 w-full"
           >
             Adicionar
           </Button>
