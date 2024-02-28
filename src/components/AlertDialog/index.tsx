@@ -29,7 +29,7 @@ export function Alertdialog({
 }: AlertdialogProps) {
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent>
+      <AlertDialogContent className="w-3/4 rounded-md">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-lg">{title}</AlertDialogTitle>
           <AlertDialogDescription className="text-base">
