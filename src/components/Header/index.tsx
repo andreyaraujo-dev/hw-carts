@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { ToggleTheme } from '../ToggleTheme'
 import {
   Sheet,
@@ -18,7 +18,7 @@ export function Header() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="flex items-center justify-end p-6">
+    <header className="flex items-center justify-end p-6 border-b">
       <div className="hidden md:block">
         <span className="mr-3">
           Olá, <span className="text-blue-800">{session?.user?.name}</span>
@@ -60,6 +60,13 @@ export function Header() {
                     Coleção
                   </li>
                 </Link>
+
+                <li
+                  className="p-2"
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                >
+                  Sair
+                </li>
 
                 <li className="p-2">
                   <ToggleTheme />
