@@ -6,12 +6,12 @@ export function AsideMenu() {
       <span className="font-bold text-2xl text-blue-800">HW CARTS</span>
 
       <ul className="text-base font-medium text-slate-300">
-        <Link href="/home">
+        <Link href="/dashboard/home">
           <li className="hover:bg-slate-900 transition-all duration-300 rounded-md p-2 hover:cursor-pointer">
             Home
           </li>
         </Link>
-        <Link href="/collection">
+        <Link href="/dashboard/collection">
           <li className="hover:bg-slate-900 transition-all duration-300 rounded-md p-2 hover:cursor-pointer">
             Coleção
           </li>
