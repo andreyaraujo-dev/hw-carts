@@ -32,6 +32,7 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Checkbox } from '@/components/ui/checkbox'
 import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
+import { ContentHeader } from '@/components/ContentHeader'
 
 const defaultValues = {
   model: '',
@@ -64,7 +65,12 @@ export default function AddCart() {
 
   return (
     <Container>
-      <h1 className="font-bold text-3xl mb-3">Adicionar Carrinho</h1>
+      <ContentHeader
+        title="Adicionar carrinho"
+        previousLink="/dashboard/collection"
+        currentPath="Adicionar novo carrinho"
+        previousPath="Coleção"
+      />
 
       <Card className="w-full">
         <CardContent className="p-3 flex flex-col space-y-4">

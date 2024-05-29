@@ -53,7 +53,7 @@ export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
             />
           ))}
           <Link href={pageToRedirect}>
-            <Card className="w-80 h-24 hover:cursor-pointer hover:bg-slate-900 transition-all flex items-center justify-center text-base">
+            <Card className="w-80 h-24 hover:cursor-pointer hover:bg-zinc-900 transition-all flex items-center justify-center text-base">
               <p>Ver mais</p>
             </Card>
           </Link>

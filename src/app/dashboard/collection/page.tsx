@@ -37,6 +37,7 @@ import { SearchCart, searchCartSchema } from './schemas/searchCart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { queryClient } from '@/services/react-query/queryClient'
+import { ContentHeader } from '@/components/ContentHeader'
 
 export default function Collection() {
   const { toast } = useToast()
@@ -133,11 +134,12 @@ export default function Collection() {
 
   return (
     <Container>
-      <div className="w-full">
-        <span>
-          <h1 className="font-bold text-3xl mb-3">Sua Coleção</h1>
-        </span>
-      </div>
+      <ContentHeader
+        title="Sua Coleção"
+        previousLink="/dashboard/home"
+        currentPath="Coleção de carrinhos"
+        previousPath="Home"
+      />
       <div className="w-full flex md:justify-between md:flex-row flex-col space-y-3 md:space-y-0">
         <div className="flex md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
           <Select value={typeFilter} onValueChange={(e) => handleFilterData(e)}>
@@ -190,7 +192,7 @@ export default function Collection() {
           </Form>
 
           <Button
-            variant="secondary"
+            variant="outline"
             className="h-12 text-base"
             type="button"
             onClick={handleClearFilters}
@@ -199,10 +201,10 @@ export default function Collection() {
           </Button>
         </div>
 
-        <Link href="/collection/add">
+        <Link href="/dashboard/collection/add">
           <Button
-            variant="default"
-            className="text-white font-medium text-base h-12 w-full"
+            variant="secondary"
+            className="text-white font-medium text-base h-12 w-full "
           >
             Adicionar
           </Button>
@@ -257,7 +259,7 @@ export default function Collection() {
                       </TableCell>
                       <TableCell className="flex space-x-3">
                         <Link
-                          href={`/collection/update/${cart._id}`}
+                          href={`/dashboard/collection/update/${cart._id}`}
                           className="text-blue-300"
                         >
                           <Button variant="outline">
