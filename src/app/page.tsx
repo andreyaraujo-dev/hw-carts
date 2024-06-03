@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { signIn } from 'next-auth/react'
+import Image from 'next/image'
 
 export default function Login() {
   return (
@@ -20,8 +21,15 @@ export default function Login() {
       <div className="mt-5">
         <Button
           onClick={() => signIn('google', { callbackUrl: '/dashboard/home' })}
-          className="text-zinc-200 font-bold"
+          className="text-zinc-200 dark:text-zinc-900 font-bold"
         >
+          <Image
+            src="/google.png"
+            width={0}
+            height={0}
+            alt="Google icon"
+            className="w-4 h-4 mr-2"
+          />
           Entrar com uma conta google
         </Button>
       </div>

@@ -32,7 +32,10 @@ export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
   return (
     <>
       {isLoading ? (
-        <Skeleton className="w-96 m-2" />
+        <>
+          <Skeleton className="w-80 h-24 m-2 bg-zinc-700" />
+          <Skeleton className="w-80 h-24 m-2 bg-zinc-700" />
+        </>
       ) : carts && carts?.length > 0 ? (
         <>
           {filteredCarts?.map((cart) => (
