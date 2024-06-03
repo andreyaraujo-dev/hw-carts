@@ -10,14 +10,7 @@ import {
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
+
 import { PenBox, Search, Star, Trash2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alertdialog } from '@/components/AlertDialog'
@@ -38,6 +31,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { queryClient } from '@/services/react-query/queryClient'
 import { ContentHeader } from '@/components/ContentHeader'
+import { DataTable } from './Table/DataTable'
+import { columns } from './Table/Columns'
 
 export default function Collection() {
   const { toast } = useToast()
@@ -217,70 +212,7 @@ export default function Collection() {
         ) : carts && carts?.length > 0 ? (
           <Card>
             <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className=""></TableHead>
-                    <TableHead>Modelo</TableHead>
-                    <TableHead>Ano</TableHead>
-                    <TableHead>Data de compra</TableHead>
-                    <TableHead>Valor</TableHead>
-                    <TableHead>Ações</TableHead>
-                  </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                  {carts?.map((cart) => (
-                    <TableRow key={cart._id}>
-                      <TableCell>
-                        {cart.isFavorite && (
-                          <Star size={12} className="text-yellow-500" />
-                        )}
-                      </TableCell>
-                      <TableCell>{cart.model}</TableCell>
-                      <TableCell>{cart.year}</TableCell>
-                      <TableCell>
-                        {cart.purchaseDate
-                          ? new Date(cart.purchaseDate).toLocaleDateString(
-                              'pt-BR',
-                              {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric'
-                              }
-                            )
-                          : 'Não informado'}
-                      </TableCell>
-                      <TableCell>
-                        {Intl.NumberFormat('pt-br', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        }).format(cart.value as unknown as number)}
-                      </TableCell>
-                      <TableCell className="flex space-x-3">
-                        <Link
-                          href={`/dashboard/collection/update/${cart._id}`}
-                          className="text-blue-300"
-                        >
-                          <Button variant="outline">
-                            <PenBox size={20} />
-                          </Button>
-                        </Link>
-
-                        <Button
-                          variant="outline"
-                          onClick={() => handleOpenDialogDelete(cart._id)}
-                        >
-                          <Trash2
-                            size={20}
-                            className="text-red-300 hover:cursor-pointer"
-                          />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <DataTable columns={columns} data={carts} />
             </CardContent>
           </Card>
         ) : (
