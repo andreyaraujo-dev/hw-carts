@@ -10,8 +10,9 @@ import {
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+import { useMediaQuery } from 'usehooks-ts'
 
-import { PenBox, Search, Star, Trash2 } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alertdialog } from '@/components/AlertDialog'
 import { useEffect, useState } from 'react'
@@ -32,7 +33,7 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { queryClient } from '@/services/react-query/queryClient'
 import { ContentHeader } from '@/components/ContentHeader'
 import { DataTable } from './Table/DataTable'
-import { columns } from './Table/Columns'
+import { columns, columnsMobile } from './Table/Columns'
 
 export default function Collection() {
   const { toast } = useToast()
@@ -43,7 +44,9 @@ export default function Collection() {
   const [typeFilter, setTypeFilter] = useState<
     'all' | 'favorites' | 'non-favorites'
   >('all')
-
+  const isDesktop = useMediaQuery('(min-width: 640px)', {
+    initializeWithValue: false
+  })
   const {
     data,
     isLoading,
@@ -210,11 +213,10 @@ export default function Collection() {
         {isLoading ? (
           <Skeleton className="w-96 m-2" />
         ) : carts && carts?.length > 0 ? (
-          <Card>
-            <CardContent className="p-0">
-              <DataTable columns={columns} data={carts} />
-            </CardContent>
-          </Card>
+          <DataTable
+            columns={isDesktop ? columns : columnsMobile}
+            data={carts}
+          />
         ) : (
           <p>Você não adicionou nenhum carro à sua coleção.</p>
         )}
