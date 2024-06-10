@@ -37,6 +37,11 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
+import { useQueryClient } from 'react-query'
+import { useDeleteManyCarts } from '@/services/react-query/hooks/useCarts'
+import { useToast } from '@/components/ui/use-toast'
+import { AxiosError } from 'axios'
+import { CircularLoader } from '@/components/CircularLoader'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -49,6 +54,9 @@ export function DataTable<TData extends Cart, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [isOpenModalDeleteMany, setIsOpenModalDeleteMany] = useState(false)
+  const queryClient = useQueryClient()
+  const { mutateAsync: removeManyCarts, isLoading } = useDeleteManyCarts()
+  const { toast } = useToast()
 
   const table = useReactTable({
     data,
@@ -61,10 +69,30 @@ export function DataTable<TData extends Cart, TValue>({
     }
   })
 
-  function handleDeleteSelected() {
-    const selectedRows = table.getSelectedRowModel().rows
-    console.log(selectedRows)
-    setIsOpenModalDeleteMany(true)
+  async function handleDeleteSelected() {
+    try {
+      const selectedRows = table.getSelectedRowModel().rows
+      const filteredIds = selectedRows.map((row) => row.original._id)
+      await removeManyCarts(filteredIds)
+      toast({ description: 'Carrinhos excluídos com sucesso' })
+      queryClient.refetchQueries(['carts'])
+      queryClient.invalidateQueries(['favoritesCarts', 'getCartById'])
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          title: 'Ops! Algo deu errado.',
+          description: error.message,
+          variant: 'destructive'
+        })
+      }
+      toast({
+        title: 'Ops...',
+        description: 'Ocorreu um erro na operação, tente novamente!',
+        variant: 'destructive'
+      })
+    } finally {
+      setIsOpenModalDeleteMany(false)
+    }
   }
 
   return (
@@ -84,7 +112,7 @@ export function DataTable<TData extends Cart, TValue>({
             <Button
               className="bg-red-500 text-foreground flex items-center justify-center space-x-2 hover:bg-red-600"
               disabled={table.getSelectedRowModel().rows.length <= 1}
-              onClick={handleDeleteSelected}
+              onClick={() => setIsOpenModalDeleteMany(true)}
             >
               <Trash2 size={16} />
               <span>Excluir em lote</span>
@@ -171,7 +199,13 @@ export function DataTable<TData extends Cart, TValue>({
             <Button onClick={() => setIsOpenModalDeleteMany(false)}>
               Cancelar
             </Button>
-            <Button variant="secondary">Confirmar</Button>
+            <Button
+              variant="secondary"
+              onClick={handleDeleteSelected}
+              disabled={isLoading}
+            >
+              {isLoading ? <CircularLoader /> : 'Confirmar'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
