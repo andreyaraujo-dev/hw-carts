@@ -26,10 +26,17 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
-import { useMediaQuery } from 'usehooks-ts'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -41,6 +48,7 @@ export function DataTable<TData extends Cart, TValue>({
   data
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
+  const [isOpenModalDeleteMany, setIsOpenModalDeleteMany] = useState(false)
 
   const table = useReactTable({
     data,
@@ -52,33 +60,38 @@ export function DataTable<TData extends Cart, TValue>({
       sorting
     }
   })
-  const isDesktop = useMediaQuery('(min-width: 640px)', {
-    initializeWithValue: false
-  })
+
+  function handleDeleteSelected() {
+    const selectedRows = table.getSelectedRowModel().rows
+    console.log(selectedRows)
+    setIsOpenModalDeleteMany(true)
+  }
 
   return (
     <>
-      {isDesktop && (
-        <Accordion
-          type="single"
-          collapsible
-          className="mb-3 border rounded-md px-3"
-        >
-          <AccordionItem value="item-1" className="border-b-0">
-            <AccordionTrigger className="text-foreground">
-              Opções da tabela
-            </AccordionTrigger>
-            <AccordionContent className="flex space-x-3">
-              <DataTableViewOptions table={table} />
+      <Accordion
+        type="single"
+        collapsible
+        className="mb-3 border rounded-md px-3"
+      >
+        <AccordionItem value="item-1" className="border-b-0">
+          <AccordionTrigger className="text-foreground">
+            Opções da tabela
+          </AccordionTrigger>
+          <AccordionContent className="flex flex-col md:flex-row md:space-x-3 space-y-3 md:space-y-0">
+            <DataTableViewOptions table={table} />
 
-              <Button className="bg-red-500 text-foreground flex items-center justify-center space-x-2 hover:bg-red-600">
-                <Trash2 size={16} />
-                <span>Excluir em lote</span>
-              </Button>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      )}
+            <Button
+              className="bg-red-500 text-foreground flex items-center justify-center space-x-2 hover:bg-red-600"
+              disabled={table.getSelectedRowModel().rows.length <= 1}
+              onClick={handleDeleteSelected}
+            >
+              <Trash2 size={16} />
+              <span>Excluir em lote</span>
+            </Button>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
       <Card>
         <CardContent className="p-0">
           <Table>
@@ -142,6 +155,26 @@ export function DataTable<TData extends Cart, TValue>({
           </Table>
         </CardContent>
       </Card>
+
+      <Dialog
+        open={isOpenModalDeleteMany}
+        onOpenChange={() => setIsOpenModalDeleteMany(!isOpenModalDeleteMany)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Você tem certeza disso?</DialogTitle>
+            <DialogDescription>
+              Esta operação não pode ser desfeita.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={() => setIsOpenModalDeleteMany(false)}>
+              Cancelar
+            </Button>
+            <Button variant="secondary">Confirmar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

@@ -12,6 +12,9 @@ import {
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal, Star } from 'lucide-react'
 import { DataTableColumnHeader } from './DataTableColumnHeader'
+import { DropdownMenuItemDetails } from './DropdownMenuItemDetails'
+import { DropdownMenuItemDelete } from './DropdownMenuItemDelete'
+import { DropdownMenuItemCopy } from './DropdownMenuItemCopy'
 
 export const columns: ColumnDef<Cart>[] = [
   {
@@ -109,17 +112,10 @@ export const columns: ColumnDef<Cart>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(row.original.model)}
-            >
-              Copiar modelo
-            </DropdownMenuItem>
+            <DropdownMenuItemCopy model={row.original.model} />
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Detalhes</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600 focus:bg-red-500">
-              Deletar
-            </DropdownMenuItem>
+            <DropdownMenuItemDetails cart={row.original} />
+            <DropdownMenuItemDelete cartId={row.original._id} />
           </DropdownMenuContent>
         </DropdownMenu>
       )
