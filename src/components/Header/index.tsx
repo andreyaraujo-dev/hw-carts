@@ -9,9 +9,16 @@ import {
   SheetTitle,
   SheetTrigger
 } from '../ui/sheet'
-import { MenuIcon } from 'lucide-react'
+import { Menu, MenuIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '../ui/dropdown-menu'
+import { Button } from '../ui/button'
 
 export function Header() {
   const { data: session } = useSession()
@@ -19,10 +26,23 @@ export function Header() {
 
   return (
     <header className="flex items-center justify-end p-6 border-b">
-      <div className="hidden md:block">
+      <div className="hidden md:flex md:items-center md:space-x-3">
         <span className="mr-3">
           Olá, <span className="text-blue-800">{session?.user?.name}</span>
         </span>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Menu />
+              <span className="sr-only">Menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>
+              Sair
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <ToggleTheme />
       </div>
 
@@ -50,12 +70,15 @@ export function Header() {
 
             <div className="flex flex-col justify-between h-[90%]">
               <ul className="text-base font-medium text-slate-300">
-                <Link href="/home" onClick={() => setOpen(false)}>
+                <Link href="/dashboard/home" onClick={() => setOpen(false)}>
                   <li className="hover:bg-slate-900 transition-all duration-300 rounded-md p-2 hover:cursor-pointer">
                     Home
                   </li>
                 </Link>
-                <Link href="/collection" onClick={() => setOpen(false)}>
+                <Link
+                  href="/dashboard/collection"
+                  onClick={() => setOpen(false)}
+                >
                   <li className="hover:bg-slate-900 transition-all duration-300 rounded-md p-2 hover:cursor-pointer">
                     Coleção
                   </li>

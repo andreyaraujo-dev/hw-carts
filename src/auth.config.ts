@@ -1,9 +1,18 @@
 import type { NextAuthConfig } from 'next-auth'
+import jwt from 'jsonwebtoken'
+
+const jwtSecret = process.env.JWT_SECRET
 
 export const authConfig = {
   pages: {
     signIn: '/'
   },
+  session: {
+    strategy: 'jwt',
+    maxAge: 86400 // 1 dia
+  },
+  secret: jwtSecret,
+  debug: true,
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
@@ -15,15 +24,21 @@ export const authConfig = {
         return Response.redirect(new URL('/dashboard', nextUrl))
       }
       return true
+    },
+    async jwt({ token, account }) {
+      if (account) {
+        token.access_token = jwt.sign(token, jwtSecret as string, {
+          algorithm: 'HS256',
+          expiresIn: '1d'
+        })
+      }
+
+      return token
+    },
+    async session({ session, token }) {
+      session.access_token = token.access_token
+      return session
     }
-    // signIn({ account, profile }) {
-    //   if (account?.provider === 'google') {
-    //     return (
-    //       profile?.email_verified && profile?.email?.endsWith('@example.com')
-    //     )
-    //   }
-    //   return true
-    // }
   },
   providers: [] // Add providers with an empty array for now
 } satisfies NextAuthConfig
