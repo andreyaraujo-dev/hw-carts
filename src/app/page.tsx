@@ -6,32 +6,54 @@ import Image from 'next/image'
 
 export default function Login() {
   return (
-    <main className="flex flex-col items-center w-screen h-screen justify-center bg-gradient-to-tr from-zinc-900 to-zinc-700">
-      <div className="text-center flex items-center flex-col">
-        <h1 className="text-4xl font-bold text-start text-zinc-400">
-          HW Carts
+    <main className="flex items-center w-screen h-screen justify-center">
+      <div className="flex flex-col w-8/12 h-full bg-[url('/bg-login.png')] bg-no-repeat bg-bottom justify-center bg-contain p-14">
+        <h1 className="text-6xl font-medium text-start text-zinc-200">
+          Gerencie sua coleção de carrinhos da Hot Wheels.
         </h1>
-        <p className="text-xl">
-          Gerencie a sua coleção de carrinhos da HotWheels.
-        </p>
-        <p className="text-lg text-zinc-500">
+        <p className="text-2xl text-zinc-500 font-medium">
           Tenha sua coleção na palma da sua mão.
         </p>
       </div>
-      <div className="mt-5">
-        <Button
-          onClick={() => signIn('google', { callbackUrl: '/dashboard/home' })}
-          className="text-zinc-200 dark:text-zinc-900 font-bold"
-        >
-          <Image
-            src="/google.png"
-            width={0}
-            height={0}
-            alt="Google icon"
-            className="w-4 h-4 mr-2"
-          />
-          Entrar com uma conta google
-        </Button>
+      <div className="flex-1 h-full flex items-center justify-center flex-col bg-zinc-900 p-10">
+        <div className="flex flex-col space-y-4 h-[90%] justify-center">
+          <span>
+            <Image
+              src="/logo.png"
+              width={0}
+              height={0}
+              alt="Logo icon"
+              className="w-64 h-56"
+              unoptimized
+            />
+          </span>
+          <h1 className="text-6xl font-bold text-zinc-200">HW Carts</h1>
+          <Button
+            onClick={() => signIn('google', { callbackUrl: '/dashboard/home' })}
+            className="text-zinc-200 dark:text-zinc-900 font-bold"
+          >
+            <Image
+              src="/google.png"
+              width={0}
+              height={0}
+              alt="Google icon"
+              className="w-4 h-4 mr-2"
+            />
+            Entrar com uma conta google
+          </Button>
+        </div>
+
+        <span className="text-zinc-400 font-normal text-xs mt-auto">
+          <a
+            href="http://andreyaraujo.dev"
+            target="_blank"
+            className="hover:underline"
+          >
+            Andrey Araújo
+          </a>
+          {' - '}
+          {new Date().getFullYear()}
+        </span>
       </div>
     </main>
   )
