@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
+import Image from 'next/image'
 
 export function Header() {
   const { data: session } = useSession()
@@ -47,7 +48,17 @@ export function Header() {
       </div>
 
       <div className="md:hidden flex justify-between w-full items-center">
-        <span className="font-bold text-2xl text-blue-800">HW CARTS</span>
+        <span className="font-bold text-2xl text-zinc-300 flex items-center space-x-2">
+          <Image
+            src="/logo.png"
+            width={0}
+            height={0}
+            alt="Logo icon"
+            className="w-14 h-1w-14"
+            unoptimized
+          />
+          <span>HW CARTS</span>
+        </span>
 
         <Sheet open={open} onOpenChange={() => setOpen(!open)}>
           <SheetTrigger className="md:hidden">
