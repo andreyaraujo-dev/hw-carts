@@ -12,7 +12,7 @@ export const authConfig = {
     maxAge: 86400 // 1 dia
   },
   secret: jwtSecret,
-  debug: true,
+  debug: false,
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user

@@ -4,8 +4,8 @@ import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
@@ -15,6 +15,7 @@ import { DataTableColumnHeader } from './DataTableColumnHeader'
 import { DropdownMenuItemDetails } from './DropdownMenuItemDetails'
 import { DropdownMenuItemDelete } from './DropdownMenuItemDelete'
 import { DropdownMenuItemCopy } from './DropdownMenuItemCopy'
+import Link from 'next/link'
 
 export const columns: ColumnDef<Cart>[] = [
   {
@@ -115,6 +116,9 @@ export const columns: ColumnDef<Cart>[] = [
             <DropdownMenuItemCopy model={row.original.model} />
             <DropdownMenuSeparator />
             <DropdownMenuItemDetails cart={row.original} />
+            <Link href={`/dashboard/collection/update/${row.original._id}`}>
+              <DropdownMenuItem>Editar</DropdownMenuItem>
+            </Link>
             <DropdownMenuItemDelete cartId={row.original._id} />
           </DropdownMenuContent>
         </DropdownMenu>
@@ -154,17 +158,15 @@ export const columnsMobile: ColumnDef<Cart>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(row.original.model)}
-            >
-              Copiar modelo
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Detalhes</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600 focus:bg-red-500">
-              Deletar
-            </DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuItemCopy model={row.original.model} />
+              <DropdownMenuSeparator />
+              <DropdownMenuItemDetails cart={row.original} />
+              <Link href={`/dashboard/collection/update/${row.original._id}`}>
+                <DropdownMenuItem>Editar</DropdownMenuItem>
+              </Link>
+              <DropdownMenuItemDelete cartId={row.original._id} />
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       )
