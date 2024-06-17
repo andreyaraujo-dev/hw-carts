@@ -31,7 +31,7 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Checkbox } from '@/components/ui/checkbox'
-import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
+import { formatCurrencyOnKeyUp } from '@/utils/functions'
 import { ContentHeader } from '@/components/ContentHeader'
 
 const defaultValues = {

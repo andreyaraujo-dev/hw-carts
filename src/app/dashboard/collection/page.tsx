@@ -13,7 +13,6 @@ import { useSession } from 'next-auth/react'
 import { useMediaQuery } from 'usehooks-ts'
 
 import { Search } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
 import { Alertdialog } from '@/components/AlertDialog'
 import { useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
@@ -81,11 +80,6 @@ export default function Collection() {
         duration: 3000
       })
     }
-  }
-
-  function handleOpenDialogDelete(id: string) {
-    setIdForDelete(id)
-    setOpenDialogDelete(true)
   }
 
   async function handleFilterData(type: string) {

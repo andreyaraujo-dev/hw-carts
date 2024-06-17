@@ -36,7 +36,7 @@ import {
 import { cn } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
-import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
+import { formatCurrencyOnKeyUp } from '@/utils/functions'
 import { ContentHeader } from '@/components/ContentHeader'
 
 interface UpdateCartProps {

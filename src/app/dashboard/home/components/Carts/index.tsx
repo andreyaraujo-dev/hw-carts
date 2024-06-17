@@ -27,6 +27,7 @@ export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
 
   useEffect(() => {
     if (carts) handleFilterCarts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [carts])
 
   return (
