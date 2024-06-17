@@ -6,9 +6,9 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogTrigger
 } from '@/components/ui/dialog'
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/use-toast'
 import { useDeleteCart } from '@/services/react-query/hooks/useCarts'
 import { AxiosError } from 'axios'
@@ -22,10 +22,10 @@ interface DropdownMenuItemDeleteProps {
 export function DropdownMenuItemDelete({
   cartId
 }: DropdownMenuItemDeleteProps) {
-  const [isOpen, setIsOpen] = useState(false)
   const { mutateAsync: removeCart, isLoading, isError, error } = useDeleteCart()
   const { toast } = useToast()
   const queryClient = useQueryClient()
+  const [isOpen, setIsOpen] = useState(false)
 
   async function handleDelete() {
     try {
@@ -60,34 +60,28 @@ export function DropdownMenuItemDelete({
   }
 
   return (
-    <>
-      <DropdownMenuItem
-        className="text-red-600 focus:bg-red-500"
-        onClick={() => setIsOpen(!isOpen)}
-        onSelect={(e) => e.preventDefault()}
-      >
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger className="px-2 py-1.5 text-sm text-red-600 focus:bg-red-500 focus:text-foreground w-full rounded-md text-start">
         Deletar
-      </DropdownMenuItem>
-      <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Você tem certeza disso?</DialogTitle>
-            <DialogDescription>
-              Esta operação não pode ser desfeita.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button onClick={() => setIsOpen(false)}>Cancelar</Button>
-            <Button
-              variant="secondary"
-              onClick={handleDelete}
-              disabled={isLoading}
-            >
-              {isLoading ? <CircularLoader /> : 'Confirmar'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+      </DialogTrigger>
+      <DialogContent className="w-4/5 md:w-full">
+        <DialogHeader>
+          <DialogTitle>Você tem certeza disso?</DialogTitle>
+          <DialogDescription>
+            Esta operação não pode ser desfeita.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="flex md:flex-row flex-col space-y-3 md:space-y-0">
+          <Button onClick={() => setIsOpen(false)}>Cancelar</Button>
+          <Button
+            variant="secondary"
+            onClick={handleDelete}
+            disabled={isLoading}
+          >
+            {isLoading ? <CircularLoader /> : 'Confirmar'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
