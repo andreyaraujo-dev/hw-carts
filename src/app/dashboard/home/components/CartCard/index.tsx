@@ -17,7 +17,7 @@ export function CartCard({
   isFavorite
 }: CartCardProps) {
   return (
-    <Card className="w-80 h-24 hover:cursor-pointer hover:bg-slate-900 transition-all">
+    <Card className="w-80 h-24 hover:cursor-pointer hover:bg-zinc-900 transition-all">
       <CardContent className="flex p-0 w-full">
         <div
           className="w-2/5 h-auto bg-no-repeat bg-cover bg-center rounded-l-md"

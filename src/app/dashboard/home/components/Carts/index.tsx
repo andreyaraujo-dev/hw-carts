@@ -27,12 +27,16 @@ export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
 
   useEffect(() => {
     if (carts) handleFilterCarts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [carts])
 
   return (
     <>
       {isLoading ? (
-        <Skeleton className="w-96 m-2" />
+        <>
+          <Skeleton className="w-80 h-24 m-2 bg-zinc-700" />
+          <Skeleton className="w-80 h-24 m-2 bg-zinc-700" />
+        </>
       ) : carts && carts?.length > 0 ? (
         <>
           {filteredCarts?.map((cart) => (
@@ -53,7 +57,7 @@ export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
             />
           ))}
           <Link href={pageToRedirect}>
-            <Card className="w-80 h-24 hover:cursor-pointer hover:bg-slate-900 transition-all flex items-center justify-center text-base">
+            <Card className="w-80 h-24 hover:cursor-pointer hover:bg-zinc-900 transition-all flex items-center justify-center text-base">
               <p>Ver mais</p>
             </Card>
           </Link>

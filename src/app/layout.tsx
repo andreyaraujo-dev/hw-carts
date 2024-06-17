@@ -8,7 +8,10 @@ import { Toaster } from '@/components/ui/toaster'
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
-  title: 'HW Carts'
+  title: 'HW Carts',
+  icons: {
+    icon: '/logo.png'
+  }
 }
 
 export default function RootLayout({

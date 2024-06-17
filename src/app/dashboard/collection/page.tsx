@@ -10,16 +10,9 @@ import {
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import { PenBox, Search, Star, Trash2 } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+import { useMediaQuery } from 'usehooks-ts'
+
+import { Search } from 'lucide-react'
 import { Alertdialog } from '@/components/AlertDialog'
 import { useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
@@ -37,6 +30,9 @@ import { SearchCart, searchCartSchema } from './schemas/searchCart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { queryClient } from '@/services/react-query/queryClient'
+import { ContentHeader } from '@/components/ContentHeader'
+import { DataTable } from './Table/DataTable'
+import { columns, columnsMobile } from './Table/Columns'
 
 export default function Collection() {
   const { toast } = useToast()
@@ -47,7 +43,9 @@ export default function Collection() {
   const [typeFilter, setTypeFilter] = useState<
     'all' | 'favorites' | 'non-favorites'
   >('all')
-
+  const isDesktop = useMediaQuery('(min-width: 640px)', {
+    initializeWithValue: false
+  })
   const {
     data,
     isLoading,
@@ -82,11 +80,6 @@ export default function Collection() {
         duration: 3000
       })
     }
-  }
-
-  function handleOpenDialogDelete(id: string) {
-    setIdForDelete(id)
-    setOpenDialogDelete(true)
   }
 
   async function handleFilterData(type: string) {
@@ -133,11 +126,12 @@ export default function Collection() {
 
   return (
     <Container>
-      <div className="w-full">
-        <span>
-          <h1 className="font-bold text-3xl mb-3">Sua Coleção</h1>
-        </span>
-      </div>
+      <ContentHeader
+        title="Sua Coleção"
+        previousLink="/dashboard/home"
+        currentPath="Coleção de carrinhos"
+        previousPath="Home"
+      />
       <div className="w-full flex md:justify-between md:flex-row flex-col space-y-3 md:space-y-0">
         <div className="flex md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
           <Select value={typeFilter} onValueChange={(e) => handleFilterData(e)}>
@@ -190,7 +184,7 @@ export default function Collection() {
           </Form>
 
           <Button
-            variant="secondary"
+            variant="outline"
             className="h-12 text-base"
             type="button"
             onClick={handleClearFilters}
@@ -199,10 +193,10 @@ export default function Collection() {
           </Button>
         </div>
 
-        <Link href="/collection/add">
+        <Link href="/dashboard/collection/add">
           <Button
-            variant="default"
-            className="text-white font-medium text-base h-12 w-full"
+            variant="secondary"
+            className="text-white font-medium text-base h-12 w-full "
           >
             Adicionar
           </Button>
@@ -213,74 +207,10 @@ export default function Collection() {
         {isLoading ? (
           <Skeleton className="w-96 m-2" />
         ) : carts && carts?.length > 0 ? (
-          <Card>
-            <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className=""></TableHead>
-                    <TableHead>Modelo</TableHead>
-                    <TableHead>Ano</TableHead>
-                    <TableHead>Data de compra</TableHead>
-                    <TableHead>Valor</TableHead>
-                    <TableHead>Ações</TableHead>
-                  </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                  {carts?.map((cart) => (
-                    <TableRow key={cart._id}>
-                      <TableCell>
-                        {cart.isFavorite && (
-                          <Star size={12} className="text-yellow-500" />
-                        )}
-                      </TableCell>
-                      <TableCell>{cart.model}</TableCell>
-                      <TableCell>{cart.year}</TableCell>
-                      <TableCell>
-                        {cart.purchaseDate
-                          ? new Date(cart.purchaseDate).toLocaleDateString(
-                              'pt-BR',
-                              {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric'
-                              }
-                            )
-                          : 'Não informado'}
-                      </TableCell>
-                      <TableCell>
-                        {Intl.NumberFormat('pt-br', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        }).format(cart.value as unknown as number)}
-                      </TableCell>
-                      <TableCell className="flex space-x-3">
-                        <Link
-                          href={`/collection/update/${cart._id}`}
-                          className="text-blue-300"
-                        >
-                          <Button variant="outline">
-                            <PenBox size={20} />
-                          </Button>
-                        </Link>
-
-                        <Button
-                          variant="outline"
-                          onClick={() => handleOpenDialogDelete(cart._id)}
-                        >
-                          <Trash2
-                            size={20}
-                            className="text-red-300 hover:cursor-pointer"
-                          />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          <DataTable
+            columns={isDesktop ? columns : columnsMobile}
+            data={carts}
+          />
         ) : (
           <p>Você não adicionou nenhum carro à sua coleção.</p>
         )}

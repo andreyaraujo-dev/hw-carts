@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <footer className="w-full h-11 border-t flex items-center justify-center">
-      <span className="text-xs text-muted">
+      <span className="text-xs dark:text-muted text-zinc-600">
         Criado e desenvolvido por{' '}
         <a
           href="https://www.andreyaraujo.dev"

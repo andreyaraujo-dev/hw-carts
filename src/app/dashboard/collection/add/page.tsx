@@ -31,7 +31,9 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Checkbox } from '@/components/ui/checkbox'
-import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
+import { formatCurrencyOnKeyUp } from '@/utils/functions'
+import { ContentHeader } from '@/components/ContentHeader'
+import { useToast } from '@/components/ui/use-toast'
 
 const defaultValues = {
   model: '',
@@ -51,20 +53,35 @@ export default function AddCart() {
   })
   const { data: session } = useSession()
   const { mutateAsync: addCart, isLoading, error } = useAddCart()
+  const { toast } = useToast()
 
   const handleRegisterCart: SubmitHandler<CartDataForm> = async (data) => {
-    const cart: AddCartInput = {
-      userEmail: String(session?.user?.email),
-      ...data
-    }
+    try {
+      const cart: AddCartInput = {
+        userEmail: String(session?.user?.email),
+        ...data
+      }
 
-    await addCart(cart)
-    if (!error) router.push('/collection')
+      await addCart(cart)
+      toast({ description: 'Cadastro realizado com sucesso!', duration: 3000 })
+      if (!error) router.push('/dashboard/collection')
+    } catch (error) {
+      toast({
+        title: 'Ops!',
+        description: 'Não foi possível realizar o cadastro, tente novamente!',
+        duration: 3000
+      })
+    }
   }
 
   return (
     <Container>
-      <h1 className="font-bold text-3xl mb-3">Adicionar Carrinho</h1>
+      <ContentHeader
+        title="Adicionar carrinho"
+        previousLink="/dashboard/collection"
+        currentPath="Adicionar novo carrinho"
+        previousPath="Coleção"
+      />
 
       <Card className="w-full">
         <CardContent className="p-3 flex flex-col space-y-4">

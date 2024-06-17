@@ -1,0 +1,25 @@
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { useToast } from '@/components/ui/use-toast'
+
+interface DropdownMenuItemCopyProps {
+  model: string
+}
+
+export function DropdownMenuItemCopy({ model }: DropdownMenuItemCopyProps) {
+  const { toast } = useToast()
+  return (
+    <DropdownMenuItem
+      onClick={() => {
+        navigator.clipboard.writeText(model)
+        toast({
+          title: 'Modelo copiado',
+          description: 'Nome do modelo copiado para área de transferência!',
+          duration: 2000
+        })
+      }}
+      onSelect={(e) => e.preventDefault()}
+    >
+      Copiar modelo
+    </DropdownMenuItem>
+  )
+}

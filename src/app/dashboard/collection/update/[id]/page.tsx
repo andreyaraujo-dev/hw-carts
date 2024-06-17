@@ -36,7 +36,8 @@ import {
 import { cn } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
-import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
+import { formatCurrencyOnKeyUp } from '@/utils/functions'
+import { ContentHeader } from '@/components/ContentHeader'
 
 interface UpdateCartProps {
   params: { id: string }
@@ -85,7 +86,12 @@ export default function UpdateCart({ params }: UpdateCartProps) {
 
   return (
     <Container>
-      <h1 className="font-bold text-3xl mb-3">Adicionar Carrinho</h1>
+      <ContentHeader
+        title="Atualizar carrinho"
+        previousLink="/dashboard/collection"
+        currentPath="Atualizar registro"
+        previousPath="Coleção"
+      />
 
       <Card className="w-full">
         <CardContent className="w-full p-3 flex flex-col space-y-4">

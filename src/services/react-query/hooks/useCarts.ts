@@ -66,6 +66,11 @@ export async function deleteCart(id: string): Promise<Cart> {
   return data
 }
 
+export async function deleteManyCarts(ids: string[]): Promise<Cart> {
+  const { data } = await api.post<Cart>(`/cart/delete-many`, { ids })
+  return data
+}
+
 export function useCarts(userEmail?: string): UseQueryResult<Cart[], unknown> {
   return useQuery(['carts', userEmail], () => getCarts(userEmail), {
     enabled: !!userEmail
@@ -110,6 +115,14 @@ export function useUpdateCart() {
 
 export function useDeleteCart() {
   return useMutation(deleteCart, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['carts', 'favoritesCarts', 'getCartById'])
+    }
+  })
+}
+
+export function useDeleteManyCarts() {
+  return useMutation(deleteManyCarts, {
     onSuccess: () => {
       queryClient.invalidateQueries(['carts', 'favoritesCarts', 'getCartById'])
     }

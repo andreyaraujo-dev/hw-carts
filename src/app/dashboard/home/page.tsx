@@ -24,7 +24,7 @@ export default function Home() {
           <Carts
             isLoading={isLoadingFavorites}
             carts={favorites}
-            pageToRedirect="/collection"
+            pageToRedirect="/dashboard/collection"
           />
         </div>
       </div>
@@ -35,7 +35,7 @@ export default function Home() {
           <Carts
             isLoading={isLoading}
             carts={data}
-            pageToRedirect="/collection"
+            pageToRedirect="/dashboard/collection"
           />
         </div>
       </div>
