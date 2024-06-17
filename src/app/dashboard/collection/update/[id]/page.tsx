@@ -38,6 +38,7 @@ import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
 import { formatCurrencyOnKeyUp } from '@/utils/functions'
 import { ContentHeader } from '@/components/ContentHeader'
+import { useToast } from '@/components/ui/use-toast'
 
 interface UpdateCartProps {
   params: { id: string }
@@ -68,20 +69,32 @@ export default function UpdateCart({ params }: UpdateCartProps) {
     isLoading: isLoadingUpdateCart,
     error
   } = useUpdateCart()
+  const { toast } = useToast()
 
   useEffect(() => {
     if (!isLoadingCartData) form.reset(cartData)
   }, [isLoadingCartData, cartData, form])
 
   const handleUpdateCart: SubmitHandler<CartDataForm> = async (data) => {
-    const cart: UpdateCartInput = {
-      _id: params.id,
-      userEmail: String(session?.user?.email),
-      ...data
-    }
+    try {
+      const cart: UpdateCartInput = {
+        _id: params.id,
+        userEmail: String(session?.user?.email),
+        ...data
+      }
 
-    await updateCart(cart)
-    if (!error) router.push('/collection')
+      await updateCart(cart)
+      toast({ description: 'Registro atualizado com sucesso!', duration: 3000 })
+      if (!error) router.push('/dashboard/collection')
+    } catch (error) {
+      toast({
+        title: 'Ops!',
+        variant: 'destructive',
+        description:
+          'Não foi possível realizar a atualização, tente novamente!',
+        duration: 3000
+      })
+    }
   }
 
   return (

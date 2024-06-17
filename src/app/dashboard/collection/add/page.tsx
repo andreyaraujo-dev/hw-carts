@@ -69,6 +69,7 @@ export default function AddCart() {
       toast({
         title: 'Ops!',
         description: 'Não foi possível realizar o cadastro, tente novamente!',
+        variant: 'destructive',
         duration: 3000
       })
     }
