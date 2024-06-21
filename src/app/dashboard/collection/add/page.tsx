@@ -269,7 +269,7 @@ export default function AddCart() {
         </CardContent>
         <CardFooter className="p-3 flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
           <Button
-            className="bg-blue-600 text-white font-medium text-base w-full"
+            className="bg-blue-600 text-white font-medium text-base w-full hover:bg-blue-700"
             form="form-register-cart"
             type="submit"
             disabled={isLoading}
