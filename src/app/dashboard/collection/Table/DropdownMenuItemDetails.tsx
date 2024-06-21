@@ -28,7 +28,7 @@ export function DropdownMenuItemDetails({
         <DialogHeader>
           <DialogTitle>Detalhes</DialogTitle>
         </DialogHeader>
-        <div className="flex justify-between">
+        <div className="flex md:justify-between flex-col-reverse justify-center md:flex-row">
           <div className="flex flex-col space-y-2 text-zinc-400">
             <span>
               <b>Modelo</b>: {cart.model}
@@ -72,7 +72,7 @@ export function DropdownMenuItemDetails({
             </span>
           </div>
 
-          <div className="w-2/4 flex items-center justify-end">
+          <div className="w-full md:w-2/4 flex items-center justify-center md:justify-end md:my-0 my-5">
             {cart.imageUrl ? (
               <Image
                 className="w-full h-auto"
