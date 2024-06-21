@@ -10,7 +10,6 @@ import { CartDataForm, cartDataFormSchema } from '../schemas/addCart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
 import { useAddCart } from '@/services/react-query/hooks/useCarts'
-import { AddCartInput } from '@/@types/addCartInput'
 import { Spinner } from '@/components/Loading/Spinner'
 import {
   Form,
@@ -40,7 +39,7 @@ const defaultValues = {
   year: undefined,
   value: undefined,
   purchaseDate: undefined,
-  imageUrl: undefined,
+  image: undefined,
   isFavorite: false
 }
 
@@ -57,12 +56,16 @@ export default function AddCart() {
 
   const handleRegisterCart: SubmitHandler<CartDataForm> = async (data) => {
     try {
-      const cart: AddCartInput = {
-        userEmail: String(session?.user?.email),
-        ...data
-      }
+      const formData = new FormData()
+      Object.entries(data).forEach(([key, value]) => {
+        if (value) {
+          console.log(key, value)
+          formData.append(key, value.toString())
+        }
+      })
+      formData.append('userEmail', session?.user?.email as string)
 
-      await addCart(cart)
+      await addCart(formData)
       toast({ description: 'Cadastro realizado com sucesso!', duration: 3000 })
       if (!error) router.push('/dashboard/collection')
     } catch (error) {
@@ -216,12 +219,30 @@ export default function AddCart() {
                     </FormItem>
                   )}
                 />
-                <FormItem className="w-full">
-                  <FormLabel>Imagem do carro</FormLabel>
-                  <FormControl>
-                    <Input type="file" placeholder="Selecione uma imagem" />
-                  </FormControl>
-                </FormItem>
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field: { value, onChange, ...field } }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Imagem do carro</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          placeholder="Selecione uma imagem"
+                          {...field}
+                          // value={value?.name || ''}
+                          variant={
+                            form.formState.errors.image ? 'error' : 'default'
+                          }
+                          onChange={(event) =>
+                            onChange(event.target.files?.item(0))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               <div className="w-full flex space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
                 <FormField

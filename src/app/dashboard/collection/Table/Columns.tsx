@@ -53,6 +53,13 @@ export const columns: ColumnDef<Cart>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Ano" />
     ),
+    cell: ({ row }) => {
+      if (row.original.year) {
+        return row.original.year
+      }
+
+      return 'Não informado'
+    },
     enableSorting: false
   },
   {
@@ -77,11 +84,16 @@ export const columns: ColumnDef<Cart>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Valor" />
     ),
-    cell: ({ row }) =>
-      Intl.NumberFormat('pt-br', {
-        style: 'currency',
-        currency: 'BRL'
-      }).format(row.original.value as unknown as number),
+    cell: ({ row }) => {
+      if (row.original.value) {
+        return Intl.NumberFormat('pt-br', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(row.original.value as unknown as number)
+      }
+
+      return 'Não informado'
+    },
     enableSorting: true
   },
   {
