@@ -143,7 +143,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                   : 'default'
                               }
                               {...field}
-                              value={field.value}
+                              value={field.value || ''}
                               onChange={(event) =>
                                 field.onChange(event.target.value)
                               }
@@ -167,7 +167,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                 form.formState.errors.year ? 'error' : 'default'
                               }
                               {...field}
-                              value={field.value}
+                              value={field.value || ''}
                               onChange={(event) =>
                                 field.onChange(Number(event.target.value))
                               }
@@ -193,7 +193,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                   : 'default'
                               }
                               {...field}
-                              value={field.value}
+                              value={field.value || ''}
                               onKeyUp={(event) =>
                                 field.onChange(
                                   formatCurrencyOnKeyUp(
@@ -259,12 +259,32 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                         </FormItem>
                       )}
                     />
-                    <FormItem className="w-full">
-                      <FormLabel>Imagem do carro</FormLabel>
-                      <FormControl>
-                        <Input type="file" placeholder="Selecione uma imagem" />
-                      </FormControl>
-                    </FormItem>
+                    <FormField
+                      control={form.control}
+                      name="image"
+                      render={({ field: { value, onChange, ...field } }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Imagem do carro</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="file"
+                              placeholder="Selecione uma imagem"
+                              {...field}
+                              value={value?.name || ''}
+                              variant={
+                                form.formState.errors.image
+                                  ? 'error'
+                                  : 'default'
+                              }
+                              onChange={(event) =>
+                                onChange(event.target.files?.item(0))
+                              }
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                   <div className="w-full flex space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
                     <FormField
@@ -295,7 +315,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
         </CardContent>
         <CardFooter className="p-3 flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
           <Button
-            className="bg-blue-600 text-white font-medium text-base w-full"
+            className="bg-blue-600 text-white font-medium text-base w-full hover:bg-blue-700"
             form="form-register-cart"
             type="submit"
             disabled={isLoadingUpdateCart}

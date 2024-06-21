@@ -19,7 +19,9 @@ export function DropdownMenuItemDetails({
 }: DropdownMenuItemDetailsProps) {
   return (
     <Dialog>
-      <DialogTrigger className="px-2 py-1.5 text-sm">Detalhes</DialogTrigger>
+      <DialogTrigger className="px-2 py-1.5 text-sm text-start cursor-pointer w-full select-none rounded-sm hover:bg-accent hover:text-accent-foreground">
+        Detalhes
+      </DialogTrigger>
       <DialogContent className="w-4/5 md:w-full">
         <DialogHeader>
           <DialogTitle>Detalhes</DialogTitle>

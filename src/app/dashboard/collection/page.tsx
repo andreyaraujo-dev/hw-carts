@@ -70,7 +70,7 @@ export default function Collection() {
     await deleteCart(idForDelete)
     if (!error) {
       setOpenDialogDelete(false)
-      refetchCarts()
+      await refetchCarts()
       setIdForDelete('')
     } else {
       toast({
@@ -121,7 +121,7 @@ export default function Collection() {
 
   async function handleClearFilters() {
     searchForm.reset()
-    handleFilterData('all')
+    await handleFilterData('all')
   }
 
   return (

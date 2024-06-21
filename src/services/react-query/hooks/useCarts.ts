@@ -1,4 +1,3 @@
-import { AddCartInput } from '@/@types/addCartInput'
 import { Cart } from '@/@types/carts'
 import { UpdateCartInput } from '@/@types/updateCartInput'
 import { formatDateToCalendarInput } from '@/lib/utils'
@@ -31,8 +30,10 @@ export async function getFavoriteCarts(userEmail?: string): Promise<Cart[]> {
   return data.filter((cart) => cart.isFavorite)
 }
 
-export async function addCart(data: AddCartInput): Promise<Cart> {
-  const { data: responseData } = await api.post<Cart>('/cart', data)
+export async function addCart(data: FormData): Promise<Cart> {
+  const { data: responseData } = await api.post<Cart>('/cart', data, {
+    headers: { 'content-type': 'multipart/form-data' }
+  })
   return responseData
 }
 

@@ -53,6 +53,13 @@ export const columns: ColumnDef<Cart>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Ano" />
     ),
+    cell: ({ row }) => {
+      if (row.original.year) {
+        return row.original.year
+      }
+
+      return <span className="text-muted-foreground italic">Não informado</span>
+    },
     enableSorting: false
   },
   {
@@ -69,7 +76,7 @@ export const columns: ColumnDef<Cart>[] = [
         })
       }
 
-      return 'Não informado'
+      return <span className="text-muted-foreground italic">Não informado</span>
     }
   },
   {
@@ -77,11 +84,16 @@ export const columns: ColumnDef<Cart>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Valor" />
     ),
-    cell: ({ row }) =>
-      Intl.NumberFormat('pt-br', {
-        style: 'currency',
-        currency: 'BRL'
-      }).format(row.original.value as unknown as number),
+    cell: ({ row }) => {
+      if (row.original.value) {
+        return Intl.NumberFormat('pt-br', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(row.original.value as unknown as number)
+      }
+
+      return <span className="text-muted-foreground italic">Não informado</span>
+    },
     enableSorting: true
   },
   {
@@ -140,6 +152,13 @@ export const columnsMobile: ColumnDef<Cart>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Ano" />
     ),
+    cell: ({ row }) => {
+      if (row.original.year) {
+        return row.original.year
+      }
+
+      return <span className="text-muted-foreground italic">Não informado</span>
+    },
     enableSorting: false,
     enableHiding: true
   },

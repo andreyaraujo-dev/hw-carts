@@ -45,7 +45,7 @@ export function DropdownMenuItemDelete({
         duration: 2000
       })
       await queryClient.refetchQueries(['carts'])
-      queryClient.invalidateQueries(['favoritesCarts', 'getCartById'])
+      await queryClient.invalidateQueries(['favoritesCarts', 'getCartById'])
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -61,7 +61,7 @@ export function DropdownMenuItemDelete({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className="px-2 py-1.5 text-sm text-red-600 focus:bg-red-500 focus:text-foreground w-full rounded-md text-start">
+      <DialogTrigger className="px-2 py-1.5 text-sm text-red-600 focus:bg-red-500 focus:text-foreground hover:bg-red-500 hover:text-foreground w-full rounded-md text-start cursor-pointer select-none transition-all">
         Deletar
       </DialogTrigger>
       <DialogContent className="w-4/5 md:w-full">
