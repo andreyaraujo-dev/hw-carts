@@ -58,7 +58,7 @@ export const columns: ColumnDef<Cart>[] = [
         return row.original.year
       }
 
-      return 'Não informado'
+      return <span className="text-muted-foreground italic">Não informado</span>
     },
     enableSorting: false
   },
@@ -76,7 +76,7 @@ export const columns: ColumnDef<Cart>[] = [
         })
       }
 
-      return 'Não informado'
+      return <span className="text-muted-foreground italic">Não informado</span>
     }
   },
   {
@@ -92,7 +92,7 @@ export const columns: ColumnDef<Cart>[] = [
         }).format(row.original.value as unknown as number)
       }
 
-      return 'Não informado'
+      return <span className="text-muted-foreground italic">Não informado</span>
     },
     enableSorting: true
   },

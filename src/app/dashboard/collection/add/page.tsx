@@ -59,7 +59,6 @@ export default function AddCart() {
       const formData = new FormData()
       Object.entries(data).forEach(([key, value]) => {
         if (value) {
-          console.log(key, value)
           formData.append(key, value.toString())
         }
       })

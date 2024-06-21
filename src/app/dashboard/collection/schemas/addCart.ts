@@ -28,13 +28,31 @@ export const cartDataFormSchema = z
       .instanceof(File)
       .optional()
       // To not allow files other than images
-      .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type as string), {
-        message: 'Apenas arquivos .jpg, .jpeg, .png e .webp são aceitos.'
-      })
+      .refine(
+        (file) => {
+          if (file) {
+            return ACCEPTED_IMAGE_TYPES.includes(file?.type as string)
+          }
+
+          return true
+        },
+        {
+          message: 'Apenas arquivos .jpg, .jpeg, .png e .webp são aceitos.'
+        }
+      )
       // To not allow files larger than 5MB
-      .refine((file) => (file?.size as number) <= MAX_FILE_SIZE, {
-        message: `Tamanho máximo do arquivo é 5MB.`
-      }),
+      .refine(
+        (file) => {
+          if (file) {
+            return (file?.size as number) <= MAX_FILE_SIZE
+          }
+
+          return true
+        },
+        {
+          message: `Tamanho máximo do arquivo é 5MB.`
+        }
+      ),
     isFavorite: z.boolean().optional().default(false)
   })
   .required({ model: true })
