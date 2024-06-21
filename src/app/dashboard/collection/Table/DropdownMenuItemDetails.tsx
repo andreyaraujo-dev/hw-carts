@@ -9,6 +9,8 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import Link from 'next/link'
+import { ImageOff } from 'lucide-react'
+import Image from 'next/image'
 
 interface DropdownMenuItemDetailsProps {
   cart: Cart
@@ -26,48 +28,68 @@ export function DropdownMenuItemDetails({
         <DialogHeader>
           <DialogTitle>Detalhes</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col space-y-2 text-zinc-400">
-          <span>
-            <b>Modelo</b>: {cart.model}
-          </span>
-          <span>
-            <b>Ano</b>:{' '}
-            {cart.year ? (
-              cart.year
+        <div className="flex justify-between">
+          <div className="flex flex-col space-y-2 text-zinc-400">
+            <span>
+              <b>Modelo</b>: {cart.model}
+            </span>
+            <span>
+              <b>Ano</b>:{' '}
+              {cart.year ? (
+                cart.year
+              ) : (
+                <span className="text-muted-foreground italic">
+                  Não informado
+                </span>
+              )}
+            </span>
+            <span>
+              <b>Valor</b>:{' '}
+              {cart.value ? (
+                Intl.NumberFormat('pt-br', {
+                  style: 'currency',
+                  currency: 'BRL'
+                }).format(cart.value as unknown as number)
+              ) : (
+                <span className="text-muted-foreground italic">
+                  Não informado
+                </span>
+              )}
+            </span>
+            <span>
+              <b>Data de compra</b>:{' '}
+              {cart.purchaseDate ? (
+                new Date(cart.purchaseDate).toLocaleDateString('pt-BR', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric'
+                })
+              ) : (
+                <span className="text-muted-foreground italic">
+                  Não informado
+                </span>
+              )}
+            </span>
+          </div>
+
+          <div className="w-2/4 flex items-center justify-end">
+            {cart.imageUrl ? (
+              <Image
+                className="w-full h-auto"
+                height={0}
+                width={0}
+                src={cart.imageUrl}
+                alt="Imagem do carro"
+                unoptimized
+              />
             ) : (
-              <span className="text-muted-foreground italic">
-                Não informado
-              </span>
+              <section className="flex items-center justify-center w-auto h-auto">
+                <ImageOff size={90} className="text-zinc-500" />
+              </section>
             )}
-          </span>
-          <span>
-            <b>Valor</b>:{' '}
-            {cart.value ? (
-              Intl.NumberFormat('pt-br', {
-                style: 'currency',
-                currency: 'BRL'
-              }).format(cart.value as unknown as number)
-            ) : (
-              <span className="text-muted-foreground italic">
-                Não informado
-              </span>
-            )}
-          </span>
-          <span>
-            <b>Data de compra</b>:{' '}
-            {cart.purchaseDate ? (
-              new Date(cart.purchaseDate).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-              })
-            ) : (
-              <span className="text-muted-foreground italic">
-                Não informado
-              </span>
-            )}
-          </span>
+          </div>
         </div>
+
         <DialogFooter className="flex items-end w-full">
           <Link
             href={`/dashboard/collection/update/${cart._id}`}
