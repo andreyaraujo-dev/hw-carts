@@ -270,7 +270,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                               type="file"
                               placeholder="Selecione uma imagem"
                               {...field}
-                              value={value?.name || ''}
+                              // value={value?.name || ''}
                               variant={
                                 form.formState.errors.image
                                   ? 'error'
