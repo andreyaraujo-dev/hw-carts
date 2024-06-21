@@ -56,14 +56,6 @@ export default function AddCart() {
 
   const handleRegisterCart: SubmitHandler<CartDataForm> = async (data) => {
     try {
-      // const formData = new FormData()
-      // Object.entries(data).forEach(([key, value]) => {
-      //   if (value) {
-      //     formData.append(key, value.toString())
-      //   }
-      // })
-      // formData.append('userEmail', session?.user?.email as string)
-
       await addCart({ ...data, userEmail: String(session?.user?.email) })
       toast({ description: 'Cadastro realizado com sucesso!', duration: 3000 })
       if (!error) router.push('/dashboard/collection')
@@ -229,7 +221,6 @@ export default function AddCart() {
                           type="file"
                           placeholder="Selecione uma imagem"
                           {...field}
-                          // value={value?.name || ''}
                           variant={
                             form.formState.errors.image ? 'error' : 'default'
                           }
