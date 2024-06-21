@@ -25,7 +25,7 @@ export const cartDataFormSchema = z
     year: z.number().optional(),
     purchaseDate: z.coerce.date().optional(),
     image: z
-      .instanceof(File)
+      .any()
       .optional()
       // To not allow files other than images
       .refine(

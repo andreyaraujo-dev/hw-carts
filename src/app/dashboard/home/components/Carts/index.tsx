@@ -11,9 +11,6 @@ interface CartsProps {
   pageToRedirect: string
 }
 
-const imageURL =
-  'https://i.pinimg.com/originals/ac/34/84/ac348422c1fd4d46f9a652f32839f8d6.jpg'
-
 export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
   const [filteredCarts, setFilteredCarts] = useState<Cart[] | undefined>([])
 
@@ -42,7 +39,7 @@ export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
           {filteredCarts?.map((cart) => (
             <CartCard
               key={cart._id}
-              imageURL={imageURL}
+              imageURL={cart.imageUrl}
               model={cart.model}
               purchaseDate={
                 cart.purchaseDate &&
