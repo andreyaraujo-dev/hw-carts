@@ -6,6 +6,7 @@ import { UseQueryResult, useMutation, useQuery } from 'react-query'
 import { queryClient } from '../queryClient'
 import { formatCurrency } from '@/utils/functions'
 import { CartResponse } from '@/@types/cartResponse'
+import { AddCartInput } from '@/@types/addCartInput'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 const api = createAxiosInstance(apiUrl as string)
@@ -30,7 +31,7 @@ export async function getFavoriteCarts(userEmail?: string): Promise<Cart[]> {
   return data.filter((cart) => cart.isFavorite)
 }
 
-export async function addCart(data: FormData): Promise<Cart> {
+export async function addCart(data: AddCartInput): Promise<Cart> {
   const { data: responseData } = await api.post<Cart>('/cart', data, {
     headers: { 'content-type': 'multipart/form-data' }
   })

@@ -26,29 +26,46 @@ export function DropdownMenuItemDetails({
         <DialogHeader>
           <DialogTitle>Detalhes</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col space-y-4 text-zinc-400">
+        <div className="flex flex-col space-y-2 text-zinc-400">
           <span>
             <b>Modelo</b>: {cart.model}
           </span>
           <span>
-            <b>Ano</b>: {cart.year}
+            <b>Ano</b>:{' '}
+            {cart.year ? (
+              cart.year
+            ) : (
+              <span className="text-muted-foreground italic">
+                Não informado
+              </span>
+            )}
           </span>
           <span>
             <b>Valor</b>:{' '}
-            {Intl.NumberFormat('pt-br', {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(cart.value as unknown as number)}
+            {cart.value ? (
+              Intl.NumberFormat('pt-br', {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(cart.value as unknown as number)
+            ) : (
+              <span className="text-muted-foreground italic">
+                Não informado
+              </span>
+            )}
           </span>
           <span>
             <b>Data de compra</b>:{' '}
-            {cart.purchaseDate
-              ? new Date(cart.purchaseDate).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric'
-                })
-              : 'Não informado.'}
+            {cart.purchaseDate ? (
+              new Date(cart.purchaseDate).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+              })
+            ) : (
+              <span className="text-muted-foreground italic">
+                Não informado
+              </span>
+            )}
           </span>
         </div>
         <DialogFooter className="flex items-end w-full">

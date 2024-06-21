@@ -1,8 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { Star } from 'lucide-react'
+import { ImageOff, Star } from 'lucide-react'
 
 interface CartCardProps {
-  imageURL: string
+  imageURL?: string
   model: string
   year?: number
   purchaseDate?: string
@@ -18,13 +18,19 @@ export function CartCard({
 }: CartCardProps) {
   return (
     <Card className="w-80 h-24 hover:cursor-pointer hover:bg-zinc-900 transition-all">
-      <CardContent className="flex p-0 w-full">
-        <div
-          className="w-2/5 h-auto bg-no-repeat bg-cover bg-center rounded-l-md"
-          style={{
-            backgroundImage: `url("${imageURL}")`
-          }}
-        />
+      <CardContent className="flex p-0 w-full h-[inherit]">
+        {imageURL ? (
+          <div
+            className="w-2/5 h-auto bg-no-repeat bg-cover bg-center rounded-l-md"
+            style={{
+              backgroundImage: `url("${imageURL}")`
+            }}
+          />
+        ) : (
+          <section className="flex items-center justify-center w-auto h-auto">
+            <ImageOff size={90} className="text-zinc-500" />
+          </section>
+        )}
 
         <section className="flex flex-col justify-start p-2 flex-1">
           {isFavorite && (

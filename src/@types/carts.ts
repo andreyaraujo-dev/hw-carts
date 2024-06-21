@@ -1,6 +1,6 @@
 export type Cart = {
   _id: string
-  imageURL?: string
+  imageUrl?: string
   model: string
   year?: number
   value?: string
