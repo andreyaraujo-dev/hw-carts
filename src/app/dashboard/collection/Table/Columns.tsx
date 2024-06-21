@@ -152,6 +152,13 @@ export const columnsMobile: ColumnDef<Cart>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Ano" />
     ),
+    cell: ({ row }) => {
+      if (row.original.year) {
+        return row.original.year
+      }
+
+      return <span className="text-muted-foreground italic">Não informado</span>
+    },
     enableSorting: false,
     enableHiding: true
   },
