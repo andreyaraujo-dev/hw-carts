@@ -8,4 +8,5 @@ export type Cart = {
   isFavorite: boolean
   createdAt: Date
   updatedAt?: Date
+  comments?: string
 }

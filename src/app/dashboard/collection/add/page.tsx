@@ -33,6 +33,14 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { formatCurrencyOnKeyUp } from '@/utils/functions'
 import { ContentHeader } from '@/components/ContentHeader'
 import { useToast } from '@/components/ui/use-toast'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 
 const defaultValues = {
   model: '',
@@ -84,6 +92,7 @@ export default function AddCart() {
             <form
               onSubmit={form.handleSubmit(handleRegisterCart)}
               id="form-register-cart"
+              className="space-y-2"
             >
               <div className="w-full flex space-x-0 md:space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
                 <FormField
@@ -233,23 +242,48 @@ export default function AddCart() {
                     </FormItem>
                   )}
                 />
-              </div>
-              <div className="w-full flex space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
                 <FormField
                   control={form.control}
                   name="isFavorite"
                   render={({ field }) => (
-                    <FormItem className="flex items-center space-x-2 space-y-0 py-3 rounded-md">
+                    <FormItem className="w-full">
+                      <FormLabel>Adicionar aos favoritos?</FormLabel>
+                      <Select
+                        onValueChange={(e) => field.onChange(e === 'true')}
+                        defaultValue={field.value ? 'true' : 'false'}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="true">Sim</SelectItem>
+                          <SelectItem value="false">Não</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-full flex space-x-3 flex-col md:flex-row space-y-3 md:space-y-0">
+                <FormField
+                  control={form.control}
+                  name="comments"
+                  render={({ field }) => (
+                    <FormItem className="md:w-2/3 w-full">
+                      <FormLabel>Observações</FormLabel>
                       <FormControl>
-                        <Checkbox
-                          className="rounded-sm h-5 w-5 hover:cursor-pointer"
-                          checked={field.value}
-                          onCheckedChange={(event) => field.onChange(event)}
+                        <Textarea
+                          placeholder="Adicione alguma obeserção ou detalhes do carro"
+                          {...field}
+                          value={field.value}
+                          onChange={(event) =>
+                            field.onChange(event.target.value)
+                          }
                         />
                       </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>Adicionar aos favoritos</FormLabel>
-                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
