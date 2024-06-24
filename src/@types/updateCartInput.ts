@@ -7,4 +7,5 @@ export type UpdateCartInput = {
   purchaseDate?: Date
   imageUrl?: string
   isFavorite?: boolean
+  comments?: string
 }

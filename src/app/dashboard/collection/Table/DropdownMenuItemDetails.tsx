@@ -70,9 +70,17 @@ export function DropdownMenuItemDetails({
                 </span>
               )}
             </span>
+            <span>
+              <b>Observações</b>:{' '}
+              {cart.comments || (
+                <span className="text-muted-foreground italic">
+                  Não informado
+                </span>
+              )}
+            </span>
           </div>
 
-          <div className="w-full md:w-2/4 flex items-center justify-center md:justify-end md:my-0 my-5">
+          <div className="w-full md:w-2/4 flex items-center justify-center md:justify-end md:my-0 my-5 p-2">
             {cart.imageUrl ? (
               <Image
                 className="w-full h-auto"
