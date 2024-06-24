@@ -86,22 +86,42 @@ export default function Collection() {
     let favorites
     let allCarts
     let nonFavorites
+    const searchModel = searchForm.getValues('model')
+    const regex = new RegExp(`^${searchModel}|${searchModel}$`, 'i')
     switch (type) {
       case 'all':
         setTypeFilter('all')
         allCarts = await refetchCarts()
-        setCarts(allCarts.data)
+        if (allCarts && 'data' in allCarts) {
+          allCarts = allCarts.data
+        }
+        if (searchModel) {
+          allCarts = allCarts?.filter((cart) => regex.test(cart.model))
+        }
+        setCarts(allCarts)
         break
       case 'favorites':
         setTypeFilter('favorites')
         allCarts = await refetchCarts()
-        favorites = allCarts.data?.filter((cart) => cart.isFavorite)
+        favorites = allCarts.data?.filter((cart) => {
+          if (searchModel) {
+            if (regex.test(cart.model) && cart.isFavorite) return cart
+          } else {
+            if (cart.isFavorite) return cart
+          }
+        })
         setCarts(favorites)
         break
       case 'non-favorites':
         setTypeFilter('non-favorites')
         allCarts = await refetchCarts()
-        nonFavorites = allCarts.data?.filter((cart) => !cart.isFavorite)
+        nonFavorites = allCarts.data?.filter((cart) => {
+          if (searchModel) {
+            if (regex.test(cart.model) && !cart.isFavorite) return cart
+          } else {
+            if (!cart.isFavorite) return cart
+          }
+        })
         setCarts(nonFavorites)
         break
       default:
@@ -113,8 +133,13 @@ export default function Collection() {
   }
 
   async function handleSubmitSearch(data: SearchCart) {
-    const cartsFiltered = await queryClient.fetchQuery('cartsByModel', {
+    let cartsFiltered = await queryClient.fetchQuery('cartsByModel', {
       queryFn: () => getCartsByModel(data.model, session?.user?.email as string)
+    })
+    cartsFiltered = cartsFiltered.filter((cart) => {
+      if (typeFilter === 'favorites') return cart.isFavorite
+      if (typeFilter === 'non-favorites') return !cart.isFavorite
+      return cart
     })
     setCarts(cartsFiltered)
   }
