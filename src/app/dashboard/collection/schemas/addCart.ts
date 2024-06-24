@@ -53,7 +53,9 @@ export const cartDataFormSchema = z
           message: `Tamanho máximo do arquivo é 5MB.`
         }
       ),
-    isFavorite: z.boolean().optional().default(false)
+    isFavorite: z.boolean().optional().default(false),
+    // .transform((value) => value === 'true'),
+    comments: z.string().optional()
   })
   .required({ model: true })
 

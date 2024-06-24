@@ -6,4 +6,5 @@ export type AddCartInput = {
   purchaseDate?: Date
   image?: Express.Multer.File
   isFavorite?: boolean
+  comments?: string
 }
