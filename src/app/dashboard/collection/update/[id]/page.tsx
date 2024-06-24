@@ -27,7 +27,6 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Popover,
   PopoverContent,
