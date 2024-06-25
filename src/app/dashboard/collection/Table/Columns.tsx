@@ -16,6 +16,7 @@ import { DropdownMenuItemDetails } from './DropdownMenuItemDetails'
 import { DropdownMenuItemDelete } from './DropdownMenuItemDelete'
 import { DropdownMenuItemCopy } from './DropdownMenuItemCopy'
 import Link from 'next/link'
+import React from 'react'
 
 export const columns: ColumnDef<Cart>[] = [
   {
@@ -116,6 +117,19 @@ export const columns: ColumnDef<Cart>[] = [
       <DataTableColumnHeader column={column} title="Ações" />
     ),
     cell: ({ row }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [openModalDetails, setOpenModalDetails] = React.useState(false)
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [openModalDelete, setOpenModalDelete] = React.useState(false)
+
+      function onCloseModalDetails() {
+        setOpenModalDetails(false)
+      }
+
+      function onCloseModalDelete() {
+        setOpenModalDelete(false)
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -127,12 +141,29 @@ export const columns: ColumnDef<Cart>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuItemCopy model={row.original.model} />
             <DropdownMenuSeparator />
-            <DropdownMenuItemDetails cart={row.original} />
+            <DropdownMenuItem onSelect={() => setOpenModalDetails(true)}>
+              Detalhes
+            </DropdownMenuItem>
             <Link href={`/dashboard/collection/update/${row.original._id}`}>
               <DropdownMenuItem>Editar</DropdownMenuItem>
             </Link>
-            <DropdownMenuItemDelete cartId={row.original._id} />
+            <DropdownMenuItem
+              onSelect={() => setOpenModalDelete(true)}
+              className="text-red-600 focus:bg-red-500 focus:text-foreground hover:bg-red-500 hover:text-foreground"
+            >
+              Deletar
+            </DropdownMenuItem>
           </DropdownMenuContent>
+          <DropdownMenuItemDelete
+            cartId={row.original._id}
+            open={openModalDelete}
+            onClose={onCloseModalDelete}
+          />
+          <DropdownMenuItemDetails
+            cart={row.original}
+            open={openModalDetails}
+            onClose={onCloseModalDetails}
+          />
         </DropdownMenu>
       )
     },
@@ -141,6 +172,30 @@ export const columns: ColumnDef<Cart>[] = [
 ]
 
 export const columnsMobile: ColumnDef<Cart>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="w-[1.125rem] h-[1.125rem] rounded-[0.25rem]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="w-[1.125rem] h-[1.125rem] rounded-[0.25rem]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false
+  },
   {
     accessorKey: 'model',
     header: ({ column }) => (
@@ -168,6 +223,19 @@ export const columnsMobile: ColumnDef<Cart>[] = [
       <DataTableColumnHeader column={column} title="Ações" />
     ),
     cell: ({ row }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [openModalDetails, setOpenModalDetails] = React.useState(false)
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [openModalDelete, setOpenModalDelete] = React.useState(false)
+
+      function onCloseModalDetails() {
+        setOpenModalDetails(false)
+      }
+
+      function onCloseModalDelete() {
+        setOpenModalDelete(false)
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -180,13 +248,30 @@ export const columnsMobile: ColumnDef<Cart>[] = [
             <DropdownMenuGroup>
               <DropdownMenuItemCopy model={row.original.model} />
               <DropdownMenuSeparator />
-              <DropdownMenuItemDetails cart={row.original} />
+              <DropdownMenuItem onSelect={() => setOpenModalDetails(true)}>
+                Detalhes
+              </DropdownMenuItem>
               <Link href={`/dashboard/collection/update/${row.original._id}`}>
                 <DropdownMenuItem>Editar</DropdownMenuItem>
               </Link>
-              <DropdownMenuItemDelete cartId={row.original._id} />
+              <DropdownMenuItem
+                onSelect={() => setOpenModalDelete(true)}
+                className="text-red-600 focus:bg-red-500 focus:text-foreground hover:bg-red-500 hover:text-foreground"
+              >
+                Deletar
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
+          <DropdownMenuItemDelete
+            cartId={row.original._id}
+            open={openModalDelete}
+            onClose={onCloseModalDelete}
+          />
+          <DropdownMenuItemDetails
+            cart={row.original}
+            open={openModalDetails}
+            onClose={onCloseModalDetails}
+          />
         </DropdownMenu>
       )
     },

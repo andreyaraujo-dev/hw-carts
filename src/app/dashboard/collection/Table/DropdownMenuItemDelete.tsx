@@ -6,26 +6,27 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '@/components/ui/dialog'
 import { useToast } from '@/components/ui/use-toast'
 import { useDeleteCart } from '@/services/react-query/hooks/useCarts'
 import { AxiosError } from 'axios'
-import { useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 interface DropdownMenuItemDeleteProps {
   cartId: string
+  open: boolean
+  onClose: () => void
 }
 
 export function DropdownMenuItemDelete({
-  cartId
+  cartId,
+  open,
+  onClose
 }: DropdownMenuItemDeleteProps) {
   const { mutateAsync: removeCart, isLoading, isError, error } = useDeleteCart()
   const { toast } = useToast()
   const queryClient = useQueryClient()
-  const [isOpen, setIsOpen] = useState(false)
 
   async function handleDelete() {
     try {
@@ -55,15 +56,12 @@ export function DropdownMenuItemDelete({
         })
       }
     } finally {
-      setIsOpen(false)
+      onClose()
     }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className="px-2 py-1.5 text-sm text-red-600 focus:bg-red-500 focus:text-foreground hover:bg-red-500 hover:text-foreground w-full rounded-md text-start cursor-pointer select-none transition-all">
-        Deletar
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="w-4/5 md:w-full">
         <DialogHeader>
           <DialogTitle>Você tem certeza disso?</DialogTitle>
@@ -72,7 +70,7 @@ export function DropdownMenuItemDelete({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex md:flex-row flex-col space-y-3 md:space-y-0">
-          <Button onClick={() => setIsOpen(false)}>Cancelar</Button>
+          <Button onClick={() => onClose()}>Cancelar</Button>
           <Button
             variant="secondary"
             onClick={handleDelete}
