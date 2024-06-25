@@ -17,7 +17,7 @@ export function DropdownMenuItemCopy({ model }: DropdownMenuItemCopyProps) {
           duration: 2000
         })
       }}
-      onSelect={(e) => e.preventDefault()}
+      // onSelect={(e) => e.preventDefault()}
     >
       Copiar modelo
     </DropdownMenuItem>
