@@ -20,7 +20,7 @@ export default function Home() {
     <div className="flex w-full h-full p-6 flex-col space-y-5">
       <div className="w-full">
         <h2 className="font-bold text-3xl mb-3">Favoritos</h2>
-        <div className="w-full md:max-w-5xl grid grid-flow-col auto-cols-max md:grid-flow-row-dense md:grid-cols-3 gap-3 overflow-x-auto pb-3">
+        <div className="md:max-w-6xl auto-cols-max grid grid-flow-col grid-rows-1 gap-3 overflow-x-scroll pb-3 scrollbar scrollbar-h-2 scrollbar-thumb-rounded-full scrollbar-thumb-accent">
           <Carts
             isLoading={isLoadingFavorites}
             carts={favorites}
@@ -29,9 +29,9 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-full">
+      <div className="w-full mb-3">
         <h2 className="font-bold text-3xl mb-3">Coleção</h2>
-        <div className="w-full md:max-w-5xl grid grid-flow-col auto-cols-max md:grid-flow-row-dense md:grid-cols-3 gap-3 overflow-x-auto pb-3">
+        <div className="md:max-w-6xl auto-cols-max grid grid-flow-col grid-rows-1 gap-3 overflow-x-scroll pb-3 scrollbar scrollbar-h-2 scrollbar-thumb-rounded-full scrollbar-thumb-accent">
           <Carts
             isLoading={isLoading}
             carts={data}
