@@ -20,31 +20,53 @@ import {
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
 import Image from 'next/image'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useRouter } from 'next/navigation'
 
 export function Header() {
   const { data: session } = useSession()
   const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   return (
-    <header className="flex items-center justify-end p-6 border-b">
-      <div className="hidden md:flex md:items-center md:space-x-3">
-        <span className="mr-3">
-          Olá, <span className="text-blue-800">{session?.user?.name}</span>
-        </span>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
-              <Menu />
-              <span className="sr-only">Menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>
-              Sair
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <ToggleTheme />
+    <header className="flex items-center p-6 border-b">
+      <div className="hidden md:flex md:items-center md:space-x-3 md:justify-between w-full">
+        <div className="flex space-x-2">
+          <Avatar>
+            <AvatarImage src={session?.user?.image || ''} />
+            <AvatarFallback>
+              {session?.user?.name?.split(' ')[0].split('')[0]}
+              {session?.user?.name?.split(' ')[1].split('')[0]}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span>{session?.user?.name?.split(' ')[0]}</span>
+            <span className="text-zinc-500 text-sm">
+              {session?.user?.name?.split(' ')[1]}
+            </span>
+          </div>
+        </div>
+        <div className="md:flex md:items-center md:space-x-3">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Menu />
+                <span className="sr-only">Menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={() => router.push('/dashboard/perfil')}
+              >
+                Perfil
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>
+                Sair
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <ToggleTheme />
+        </div>
       </div>
 
       <div className="md:hidden flex justify-between w-full items-center">

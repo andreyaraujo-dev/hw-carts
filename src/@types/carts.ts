@@ -3,7 +3,7 @@ export type Cart = {
   imageUrl?: string
   model: string
   year?: number
-  value?: string
+  value?: number
   purchaseDate?: Date
   isFavorite: boolean
   createdAt: Date
