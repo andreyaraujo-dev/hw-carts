@@ -30,19 +30,11 @@ import {
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
 import { useQueryClient } from 'react-query'
 import { useDeleteManyCarts } from '@/services/react-query/hooks/useCarts'
 import { useToast } from '@/components/ui/use-toast'
 import { AxiosError } from 'axios'
-import { CircularLoader } from '@/components/CircularLoader'
+import { DialogCustom } from '@/components/DialogCustom'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -77,8 +69,8 @@ export function DataTable<TData extends Cart, TValue>({
       const filteredIds = selectedRows.map((row) => row.original._id)
       await removeManyCarts(filteredIds)
       toast({ description: 'Carrinhos excluídos com sucesso' })
-      queryClient.refetchQueries(['carts'])
-      queryClient.invalidateQueries(['favoritesCarts', 'getCartById'])
+      await queryClient.refetchQueries(['carts'])
+      await queryClient.invalidateQueries(['favoritesCarts', 'getCartById'])
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -186,31 +178,14 @@ export function DataTable<TData extends Cart, TValue>({
         </CardContent>
       </Card>
 
-      <Dialog
+      <DialogCustom
+        title="Você tem certeza disso?"
+        description="Esta operação não pode ser desfeita."
+        onCancel={() => setIsOpenModalDeleteMany(false)}
+        onConfirm={() => handleDeleteSelected()}
         open={isOpenModalDeleteMany}
-        onOpenChange={() => setIsOpenModalDeleteMany(!isOpenModalDeleteMany)}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Você tem certeza disso?</DialogTitle>
-            <DialogDescription>
-              Esta operação não pode ser desfeita.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button onClick={() => setIsOpenModalDeleteMany(false)}>
-              Cancelar
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={handleDeleteSelected}
-              disabled={isLoading}
-            >
-              {isLoading ? <CircularLoader /> : 'Confirmar'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        isLoading={isLoading}
+      />
     </>
   )
 }
