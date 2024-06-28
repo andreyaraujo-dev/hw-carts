@@ -23,41 +23,41 @@ export default function Profile() {
   useEffect(() => {
     setCarts(data)
 
-    const cartsOrdered = data
-      ?.filter((car) => car.purchaseDate !== undefined)
-      .sort(
-        (a, b) =>
-          new Date(b.purchaseDate!).getTime() -
-          new Date(a.purchaseDate!).getTime()
-      )
-    if (cartsOrdered) {
-      setLastCart(cartsOrdered[0])
-      setFirstCart(cartsOrdered[cartsOrdered?.length - 1])
-    }
-
-    if (data) {
+    if (data && data.length > 0) {
       const totalValue = data.reduce((total, cart) => {
         if (cart.value) return total + cart.value
         return total
       }, 0)
       setCollectionValue(totalValue)
+
+      const cartsOrdered = data
+        ?.filter((car) => car.purchaseDate !== undefined)
+        .sort(
+          (a, b) =>
+            new Date(b.purchaseDate!).getTime() -
+            new Date(a.purchaseDate!).getTime()
+        )
+      if (cartsOrdered) {
+        setLastCart(cartsOrdered[0])
+        setFirstCart(cartsOrdered[cartsOrdered?.length - 1])
+      }
+
+      const mostExpensiveCar = data
+        ?.filter((car) => car.value !== undefined)
+        .reduce((prev, current) =>
+          // @ts-expect-error-error
+          current?.value > prev?.value ? current : prev
+        )
+      setMostExpensiveCart(mostExpensiveCar)
+
+      const cheapestCar = data
+        ?.filter((car) => car.value !== undefined)
+        .reduce((prev, current) =>
+          // @ts-expect-error-error
+          current?.value < prev?.value ? current : prev
+        )
+      setCheapestCart(cheapestCar)
     }
-
-    const mostExpensiveCar = data
-      ?.filter((car) => car.value !== undefined)
-      .reduce((prev, current) =>
-        // @ts-expect-error-error
-        current?.value > prev?.value ? current : prev
-      )
-    setMostExpensiveCart(mostExpensiveCar)
-
-    const cheapestCar = data
-      ?.filter((car) => car.value !== undefined)
-      .reduce((prev, current) =>
-        // @ts-expect-error-error
-        current?.value < prev?.value ? current : prev
-      )
-    setCheapestCart(cheapestCar)
   }, [data])
 
   return (
@@ -172,7 +172,7 @@ export default function Profile() {
                       {Intl.NumberFormat('pt-br', {
                         style: 'currency',
                         currency: 'BRL'
-                      }).format(mostExpensiveCart?.value as number)}
+                      }).format(mostExpensiveCart?.value || 0)}
                     </span>
                   </span>
 
@@ -182,7 +182,7 @@ export default function Profile() {
                       {Intl.NumberFormat('pt-br', {
                         style: 'currency',
                         currency: 'BRL'
-                      }).format(cheapestCart?.value as number)}
+                      }).format(cheapestCart?.value || 0)}
                     </span>
                   </span>
                 </div>
