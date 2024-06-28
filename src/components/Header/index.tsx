@@ -56,7 +56,7 @@ export function Header() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem
-                onClick={() => router.push('/dashboard/perfil')}
+                onClick={() => router.push('/dashboard/profile')}
               >
                 Perfil
               </DropdownMenuItem>

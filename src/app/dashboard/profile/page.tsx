@@ -10,24 +10,30 @@ import { useEffect, useState } from 'react'
 import { Cart } from '@/@types/carts'
 import { useCarts } from '@/services/react-query/hooks/useCarts'
 
-export default function Perfil() {
+export default function Profile() {
   const { data: session } = useSession()
   const [carts, setCarts] = useState<Cart[] | undefined>([])
   const [lastCart, setLastCart] = useState<Cart | undefined>()
+  const [firstCart, setFirstCart] = useState<Cart | undefined>()
   const { data } = useCarts(session?.user?.email as string | undefined)
   const [collectionValue, setCollectionValue] = useState<number | undefined>(0)
+  const [mostExpensiveCart, setMostExpensiveCart] = useState<Cart | undefined>()
+  const [cheapestCart, setCheapestCart] = useState<Cart | undefined>()
 
   useEffect(() => {
     setCarts(data)
 
-    const last = data
+    const cartsOrdered = data
       ?.filter((car) => car.purchaseDate !== undefined)
       .sort(
         (a, b) =>
           new Date(b.purchaseDate!).getTime() -
           new Date(a.purchaseDate!).getTime()
-      )[0]
-    setLastCart(last)
+      )
+    if (cartsOrdered) {
+      setLastCart(cartsOrdered[0])
+      setFirstCart(cartsOrdered[cartsOrdered?.length - 1])
+    }
 
     if (data) {
       const totalValue = data.reduce((total, cart) => {
@@ -36,6 +42,22 @@ export default function Perfil() {
       }, 0)
       setCollectionValue(totalValue)
     }
+
+    const mostExpensiveCar = data
+      ?.filter((car) => car.value !== undefined)
+      .reduce((prev, current) =>
+        // @ts-expect-error-error
+        current?.value > prev?.value ? current : prev
+      )
+    setMostExpensiveCart(mostExpensiveCar)
+
+    const cheapestCar = data
+      ?.filter((car) => car.value !== undefined)
+      .reduce((prev, current) =>
+        // @ts-expect-error-error
+        current?.value < prev?.value ? current : prev
+      )
+    setCheapestCart(cheapestCar)
   }, [data])
 
   return (
@@ -119,12 +141,48 @@ export default function Perfil() {
                   </span>
 
                   <span>
+                    Primeiro carro comprado:{' '}
+                    <span className="text-zinc-500">
+                      {firstCart?.model} -{' '}
+                      {firstCart?.purchaseDate &&
+                        new Date(firstCart.purchaseDate).toLocaleDateString(
+                          'pt-BR',
+                          {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                          }
+                        )}
+                    </span>
+                  </span>
+
+                  <span>
                     Total gasto na coleção:{' '}
                     <span className="text-zinc-500">
                       {Intl.NumberFormat('pt-br', {
                         style: 'currency',
                         currency: 'BRL'
                       }).format(collectionValue as number)}
+                    </span>
+                  </span>
+
+                  <span>
+                    Carro mais caro:{' '}
+                    <span className="text-zinc-500">
+                      {Intl.NumberFormat('pt-br', {
+                        style: 'currency',
+                        currency: 'BRL'
+                      }).format(mostExpensiveCart?.value as number)}
+                    </span>
+                  </span>
+
+                  <span>
+                    Carro mais barato:{' '}
+                    <span className="text-zinc-500">
+                      {Intl.NumberFormat('pt-br', {
+                        style: 'currency',
+                        currency: 'BRL'
+                      }).format(cheapestCart?.value as number)}
                     </span>
                   </span>
                 </div>
