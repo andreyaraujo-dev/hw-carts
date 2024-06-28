@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="w-full h-11 border-t flex items-center justify-center">
+    <footer className="w-full h-11 border-t flex items-center justify-center mt-5">
       <span className="text-xs dark:text-muted text-zinc-600">
         Criado e desenvolvido por{' '}
         <a

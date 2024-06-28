@@ -12,7 +12,7 @@ import {
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal, Star } from 'lucide-react'
 import { DataTableColumnHeader } from './DataTableColumnHeader'
-import { DropdownMenuItemDetails } from './DropdownMenuItemDetails'
+import { DialogDetailsCart } from '@/components/DialogDetailsCart'
 import { DropdownMenuItemDelete } from './DropdownMenuItemDelete'
 import { DropdownMenuItemCopy } from './DropdownMenuItemCopy'
 import Link from 'next/link'
@@ -159,7 +159,7 @@ export const columns: ColumnDef<Cart>[] = [
             open={openModalDelete}
             onClose={onCloseModalDelete}
           />
-          <DropdownMenuItemDetails
+          <DialogDetailsCart
             cart={row.original}
             open={openModalDetails}
             onClose={onCloseModalDetails}
@@ -267,7 +267,7 @@ export const columnsMobile: ColumnDef<Cart>[] = [
             open={openModalDelete}
             onClose={onCloseModalDelete}
           />
-          <DropdownMenuItemDetails
+          <DialogDetailsCart
             cart={row.original}
             open={openModalDetails}
             onClose={onCloseModalDetails}

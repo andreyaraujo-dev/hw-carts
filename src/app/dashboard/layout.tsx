@@ -13,7 +13,7 @@ export default function RootLayout({
         <AsideMenu />
         <div className="flex-1 flex flex-col overflow-hidden">
           <Header />
-          <div className="flex-1 overflow-x-hidden overflow-y-auto">
+          <div className="flex-1 overflow-x-hidden overflow-y-auto scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-accent">
             {children}
           </div>
           <Footer />

@@ -13,7 +13,7 @@ import { useSession } from 'next-auth/react'
 import { useMediaQuery } from 'usehooks-ts'
 
 import { Search } from 'lucide-react'
-import { Alertdialog } from '@/components/AlertDialog'
+import { DialogCustom } from '@/components/DialogCustom'
 import { useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import {
@@ -241,7 +241,7 @@ export default function Collection() {
         )}
       </div>
 
-      <Alertdialog
+      <DialogCustom
         title="Deletar Carrinho"
         description="Você tem certeza disso? Após a operação não será possível recuperar os dados."
         onCancel={() => setOpenDialogDelete(false)}

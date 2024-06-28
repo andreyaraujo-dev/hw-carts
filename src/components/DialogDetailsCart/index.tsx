@@ -17,7 +17,7 @@ interface DropdownMenuItemDetailsProps {
   onClose: () => void
 }
 
-export function DropdownMenuItemDetails({
+export function DialogDetailsCart({
   cart,
   open,
   onClose
