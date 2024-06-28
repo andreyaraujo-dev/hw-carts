@@ -1,11 +1,10 @@
-export function formatCurrency(value: number): string {
-  const valueFormatted = value.toLocaleString('pt-BR', {
+export function formatCurrency(value?: number): string {
+  if (!value) return ''
+  return value.toLocaleString('pt-BR', {
     // style: 'currency',
     currency: 'BRL',
     minimumFractionDigits: 2
   })
-
-  return valueFormatted
 }
 
 export function formatCurrencyOnKeyUp(value: string) {

@@ -35,7 +35,7 @@ import {
 import { cn } from '@/lib/utils'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
-import { formatCurrencyOnKeyUp } from '@/utils/functions'
+import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
 import { ContentHeader } from '@/components/ContentHeader'
 import { useToast } from '@/components/ui/use-toast'
 import {
@@ -79,7 +79,8 @@ export default function UpdateCart({ params }: UpdateCartProps) {
   const { toast } = useToast()
 
   useEffect(() => {
-    if (!isLoadingCartData) form.reset(cartData)
+    if (!isLoadingCartData)
+      form.reset({ ...cartData, value: formatCurrency(cartData?.value) })
   }, [isLoadingCartData, cartData, form])
 
   const handleUpdateCart: SubmitHandler<CartDataForm> = async (data) => {

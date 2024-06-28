@@ -4,7 +4,6 @@ import { formatDateToCalendarInput } from '@/lib/utils'
 import { createAxiosInstance } from '@/services/axios'
 import { UseQueryResult, useMutation, useQuery } from 'react-query'
 import { queryClient } from '../queryClient'
-import { formatCurrency } from '@/utils/functions'
 import { CartResponse } from '@/@types/cartResponse'
 import { AddCartInput } from '@/@types/addCartInput'
 
@@ -49,17 +48,13 @@ export async function updateCart(data: UpdateCartInput): Promise<Cart> {
 export async function getCartById(id: string): Promise<Cart> {
   const { data } = await api.get<CartResponse>(`/cart/${id}`)
   let dateFormatted: Date | undefined
-  let valueFormatted: string | undefined
   if (data.purchaseDate) {
     dateFormatted = formatDateToCalendarInput(data.purchaseDate)
   }
-  if (data.value) {
-    valueFormatted = formatCurrency(data.value)
-  }
+
   return {
     ...data,
-    purchaseDate: dateFormatted,
-    value: valueFormatted
+    purchaseDate: dateFormatted
   }
 }
 
