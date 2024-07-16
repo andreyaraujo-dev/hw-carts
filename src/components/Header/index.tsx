@@ -117,6 +117,12 @@ export function Header() {
                   </li>
                 </Link>
 
+                <Link href="/dashboard/profile" onClick={() => setOpen(false)}>
+                  <li className="hover:bg-slate-900 transition-all duration-300 rounded-md p-2 hover:cursor-pointer">
+                    Perfil
+                  </li>
+                </Link>
+
                 <li
                   className="p-2"
                   onClick={() => signOut({ callbackUrl: '/' })}
