@@ -34,6 +34,16 @@ export function DialogDetailsCart({
               <b>Modelo</b>: {cart.model}
             </span>
             <span>
+              <b>Coleção</b>:{' '}
+              {cart.collection ? (
+                cart.collection
+              ) : (
+                <span className="text-muted-foreground italic">
+                  Não informado
+                </span>
+              )}
+            </span>
+            <span>
               <b>Ano</b>:{' '}
               {cart.year ? (
                 cart.year
