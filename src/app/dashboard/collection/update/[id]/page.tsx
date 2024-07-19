@@ -53,6 +53,7 @@ interface UpdateCartProps {
 
 const defaultValues = {
   model: '',
+  collection: '',
   year: undefined,
   value: undefined,
   purchaseDate: new Date(),
@@ -88,7 +89,8 @@ export default function UpdateCart({ params }: UpdateCartProps) {
       const cart: UpdateCartInput = {
         _id: params.id,
         userEmail: String(session?.user?.email),
-        ...data
+        ...data,
+        value: Number(data.value)
       }
 
       await updateCart(cart)
@@ -148,6 +150,32 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                               type="text"
                               variant={
                                 form.formState.errors.model
+                                  ? 'error'
+                                  : 'default'
+                              }
+                              {...field}
+                              value={field.value || ''}
+                              onChange={(event) =>
+                                field.onChange(event.target.value)
+                              }
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="collection"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Coleção</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              variant={
+                                form.formState.errors.collection
                                   ? 'error'
                                   : 'default'
                               }

@@ -2,10 +2,11 @@ export type UpdateCartInput = {
   _id: string
   userEmail: string
   model: string
-  value?: string
+  value?: number
+  collection?: string
   year?: number
   purchaseDate?: Date
-  imageUrl?: string
+  image?: Express.Multer.File
   isFavorite?: boolean
   comments?: string
 }

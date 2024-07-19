@@ -13,6 +13,7 @@ export const cartDataFormSchema = z
     model: z
       .string({ required_error: 'O modelo do carro é obrigatório' })
       .min(1, { message: 'O modelo do carro é obrigatório' }),
+    collection: z.string().optional(),
     value: z
       .string()
       .transform((val) => {
