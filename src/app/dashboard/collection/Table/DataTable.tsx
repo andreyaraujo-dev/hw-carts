@@ -169,7 +169,7 @@ export function DataTable<TData extends Cart, TValue>({
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell colSpan={7} className="rounded-b-md">
+                <TableCell colSpan={8} className="rounded-b-md">
                   <DataTablePagination table={table} />
                 </TableCell>
               </TableRow>

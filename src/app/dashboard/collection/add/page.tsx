@@ -43,6 +43,7 @@ import {
 
 const defaultValues = {
   model: '',
+  collection: '',
   year: undefined,
   value: undefined,
   purchaseDate: undefined,
@@ -63,7 +64,11 @@ export default function AddCart() {
 
   const handleRegisterCart: SubmitHandler<CartDataForm> = async (data) => {
     try {
-      await addCart({ ...data, userEmail: String(session?.user?.email) })
+      await addCart({
+        ...data,
+        userEmail: String(session?.user?.email),
+        value: Number(data.value)
+      })
       toast({ description: 'Cadastro realizado com sucesso!', duration: 3000 })
       if (!error) router.push('/dashboard/collection')
     } catch (error) {
@@ -103,9 +108,36 @@ export default function AddCart() {
                       <FormControl>
                         <Input
                           type="text"
-                          placeholder="Digite o modelo do carro"
+                          placeholder="Nome do modelo"
                           variant={
                             form.formState.errors.model ? 'error' : 'default'
+                          }
+                          {...field}
+                          value={field.value}
+                          onChange={(event) =>
+                            field.onChange(event.target.value)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="collection"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Coleção</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Nome da coleção"
+                          variant={
+                            form.formState.errors.collection
+                              ? 'error'
+                              : 'default'
                           }
                           {...field}
                           value={field.value}
@@ -128,7 +160,7 @@ export default function AddCart() {
                       <FormControl>
                         <Input
                           type="tel"
-                          placeholder="Digite o ano do carro"
+                          placeholder="Ano de fabricação"
                           variant={
                             form.formState.errors.year ? 'error' : 'default'
                           }
@@ -153,7 +185,7 @@ export default function AddCart() {
                       <FormControl>
                         <Input
                           type="tel"
-                          placeholder="Digite o valor de compra do carro"
+                          placeholder="Valor de compra"
                           variant={
                             form.formState.errors.value ? 'error' : 'default'
                           }

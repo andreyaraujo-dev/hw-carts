@@ -1,7 +1,8 @@
 export type AddCartInput = {
   userEmail: string
   model: string
-  value?: string
+  collection?: string
+  value?: number
   year?: number
   purchaseDate?: Date
   image?: Express.Multer.File

@@ -50,6 +50,19 @@ export const columns: ColumnDef<Cart>[] = [
     )
   },
   {
+    accessorKey: 'collection',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Coleção" />
+    ),
+    cell: ({ row }) => {
+      if (row.original.collection) {
+        return row.original.collection
+      }
+
+      return <span className="text-muted-foreground italic">Não informado</span>
+    }
+  },
+  {
     accessorKey: 'year',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Ano" />
