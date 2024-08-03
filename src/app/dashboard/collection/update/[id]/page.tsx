@@ -56,7 +56,7 @@ const defaultValues = {
   collection: '',
   year: undefined,
   value: undefined,
-  purchaseDate: new Date(),
+  purchaseDate: undefined,
   imageUrl: '',
   isFavorite: false
 }
@@ -262,12 +262,12 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                                   variant={'outline'}
                                   className={cn(
                                     'w-full text-left font-normal h-12 px-3 py-2 text-base',
-                                    !cartData?.purchaseDate &&
+                                    (!cartData?.purchaseDate || !field.value) &&
                                       'text-muted-foreground'
                                   )}
                                 >
-                                  {cartData?.purchaseDate ? (
-                                    format(field.value as Date, 'PPP', {
+                                  {field?.value ? (
+                                    format(field?.value as Date, 'PPP', {
                                       locale: ptBR
                                     })
                                   ) : (
