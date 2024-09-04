@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
-import { Cart } from '@/@types/carts'
+import { Cart } from '@/@types'
 import { useCarts } from '@/services/react-query/hooks/useCarts'
 
 export default function Profile() {

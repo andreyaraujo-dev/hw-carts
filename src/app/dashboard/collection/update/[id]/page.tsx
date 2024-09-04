@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react'
 import { CartDataForm, cartDataFormSchema } from '../../schemas/addCart'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
-import { UpdateCartInput } from '@/@types/updateCartInput'
+import { UpdateCartInput } from '@/@types'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/Loading/Spinner'
@@ -299,7 +299,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                     <FormField
                       control={form.control}
                       name="image"
-                      render={({ field: { value, onChange, ...field } }) => (
+                      render={({ field: { onChange, ...field } }) => (
                         <FormItem className="w-full">
                           <FormLabel>Imagem do carro</FormLabel>
                           <FormControl>
@@ -358,7 +358,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                           <FormLabel>Observações</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Adicione alguma obeserção ou detalhes do carro"
+                              placeholder="Adicione alguma observação ou detalhes do carro"
                               {...field}
                               value={cartData?.comments}
                               onChange={(event) =>

@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { Cart } from '@/@types/carts'
+import { Cart } from '@/@types'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { SearchCart, searchCartSchema } from './schemas/searchCart'

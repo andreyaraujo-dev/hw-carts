@@ -1,11 +1,8 @@
-import { Cart } from '@/@types/carts'
-import { UpdateCartInput } from '@/@types/updateCartInput'
 import { formatDateToCalendarInput } from '@/lib/utils'
 import { createAxiosInstance } from '@/services/axios'
 import { UseQueryResult, useMutation, useQuery } from 'react-query'
 import { queryClient } from '../queryClient'
-import { CartResponse } from '@/@types/cartResponse'
-import { AddCartInput } from '@/@types/addCartInput'
+import { AddCartInput, Cart, CartResponse, UpdateCartInput } from '@/@types'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 const api = createAxiosInstance(apiUrl as string)

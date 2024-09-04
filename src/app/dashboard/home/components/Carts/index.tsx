@@ -1,4 +1,4 @@
-import { Cart } from '@/@types/carts'
+import { Cart } from '@/@types'
 import { Skeleton } from '@/components/ui/skeleton'
 import { CartCard } from '../CartCard'
 import { useEffect, useState } from 'react'

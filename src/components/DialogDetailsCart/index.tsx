@@ -1,4 +1,4 @@
-import { Cart } from '@/@types/carts'
+import { Cart } from '@/@types'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,

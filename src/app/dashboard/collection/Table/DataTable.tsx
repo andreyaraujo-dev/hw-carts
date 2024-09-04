@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { Cart } from '@/@types/carts'
+import { Cart } from '@/@types'
 import { DataTablePagination } from './DataTablePagination'
 import { DataTableViewOptions } from './DataTableViewOptions'
 import { Card, CardContent } from '@/components/ui/card'

@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { ImageOff, Star } from 'lucide-react'
 import { DialogDetailsCart } from '@/components/DialogDetailsCart'
 import { useState } from 'react'
-import { Cart } from '@/@types/carts'
+import { Cart } from '@/@types'
 
 interface CartCardProps {
   cart: Cart
