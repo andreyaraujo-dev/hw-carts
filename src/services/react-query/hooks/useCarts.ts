@@ -1,31 +1,12 @@
 import { formatDateToCalendarInput } from '@/lib/utils'
 import { createAxiosInstance } from '@/services/axios'
-import { UseQueryResult, useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, UseQueryResult } from 'react-query'
 import { queryClient } from '../queryClient'
 import { AddCartInput, Cart, CartResponse, UpdateCartInput } from '@/@types'
+import { getCarts, getFavoriteCarts } from '@/actions'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 const api = createAxiosInstance(apiUrl as string)
-
-async function getCarts(userEmail?: string): Promise<Cart[]> {
-  const { data } = await api.get<Cart[]>(`/cart?userEmail=${userEmail}`)
-  return data
-}
-
-export async function getCartsByModel(
-  model: string,
-  userEmail?: string
-): Promise<Cart[]> {
-  const { data } = await api.get<Cart[]>(
-    `/cart?userEmail=${userEmail}&model=${model}`
-  )
-  return data
-}
-
-export async function getFavoriteCarts(userEmail?: string): Promise<Cart[]> {
-  const { data } = await api.get<Cart[]>(`/cart?userEmail=${userEmail}`)
-  return data.filter((cart) => cart.isFavorite)
-}
 
 export async function addCart(data: AddCartInput): Promise<Cart> {
   const { data: responseData } = await api.post<Cart>('/cart', data, {
