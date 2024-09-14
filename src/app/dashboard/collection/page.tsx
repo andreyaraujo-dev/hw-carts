@@ -1,38 +1,43 @@
 'use client'
 
-import { Container } from '@/components/Container'
-import { Skeleton } from '@/components/ui/skeleton'
-import {
-  getCartsByModel,
-  useCarts,
-  useDeleteCart
-} from '@/services/react-query/hooks/useCarts'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { Container } from '@/shared/components/Container'
+import { Skeleton } from '@/shared/components/ui/skeleton'
 import { useSession } from 'next-auth/react'
 import { useMediaQuery } from 'usehooks-ts'
 
 import { Search } from 'lucide-react'
-import { DialogCustom } from '@/components/DialogCustom'
+import { DialogCustom } from '@/shared/components/DialogCustom'
 import { useEffect, useState } from 'react'
-import { useToast } from '@/components/ui/use-toast'
+import { useToast } from '@/shared/components/ui/use-toast'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/components/ui/select'
-import { Cart } from '@/@types'
-import { Input } from '@/components/ui/input'
+} from '@/shared/components/ui/select'
+import { Cart } from '@/types'
+import { Input } from '@/shared/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { SearchCart, searchCartSchema } from './schemas/searchCart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import { queryClient } from '@/services/react-query/queryClient'
-import { ContentHeader } from '@/components/ContentHeader'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem
+} from '@/shared/components/ui/form'
+import { queryClient } from '@/shared/services/react-query/queryClient'
+import { ContentHeader } from '@/shared/components/ContentHeader'
 import { DataTable } from './Table/DataTable'
 import { columns, columnsMobile } from './Table/Columns'
+import { getCartsByModel } from '@/actions'
+import {
+  useCarts,
+  useDeleteCart
+} from '@/shared/services/react-query/hooks/useCarts'
+import { Button } from '@/shared/components/ui/button'
+import Link from 'next/link'
 
 export default function Collection() {
   const { toast } = useToast()

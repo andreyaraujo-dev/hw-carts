@@ -1,8 +1,8 @@
-import { useToast } from '@/components/ui/use-toast'
-import { useDeleteCart } from '@/services/react-query/hooks/useCarts'
+import { useToast } from '@/shared/components/ui/use-toast'
+import { useDeleteCart } from '@/shared/services/react-query/hooks/useCarts'
 import { AxiosError } from 'axios'
 import { useQueryClient } from 'react-query'
-import { DialogCustom } from '@/components/DialogCustom'
+import { DialogCustom } from '@/shared/components/DialogCustom'
 
 interface DropdownMenuItemDeleteProps {
   cartId: string

@@ -15,26 +15,25 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table'
-import { Cart } from '@/@types'
+} from '@/shared/components/ui/table'
+import { Cart } from '@/shared/types'
 import { DataTablePagination } from './DataTablePagination'
 import { DataTableViewOptions } from './DataTableViewOptions'
-import { Card, CardContent } from '@/components/ui/card'
-
+import { Card, CardContent } from '@/shared/components/ui/card'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from '@/components/ui/accordion'
+} from '@/shared/components/ui/accordion'
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/components/ui/button'
 import { Trash2 } from 'lucide-react'
 import { useQueryClient } from 'react-query'
-import { useDeleteManyCarts } from '@/services/react-query/hooks/useCarts'
-import { useToast } from '@/components/ui/use-toast'
+import { useDeleteManyCarts } from '@/shared/services/react-query/hooks/useCarts'
+import { useToast } from '@/shared/components/ui/use-toast'
 import { AxiosError } from 'axios'
-import { DialogCustom } from '@/components/DialogCustom'
+import { DialogCustom } from '@/shared/components/DialogCustom'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]

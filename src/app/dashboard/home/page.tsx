@@ -3,7 +3,7 @@
 import {
   useCarts,
   useFavoritesCarts
-} from '@/services/react-query/hooks/useCarts'
+} from '@/shared/services/react-query/hooks/useCarts'
 import { useSession } from 'next-auth/react'
 import { Carts } from './components/Carts'
 

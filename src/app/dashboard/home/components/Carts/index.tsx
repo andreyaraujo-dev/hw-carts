@@ -1,9 +1,9 @@
-import { Cart } from '@/@types'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@/shared/components/ui/skeleton'
 import { CartCard } from '../CartCard'
 import { useEffect, useState } from 'react'
-import { Card } from '@/components/ui/card'
+import { Cart } from '@/types'
 import Link from 'next/link'
+import { Card } from '@/shared/components/ui/card'
 
 interface CartsProps {
   isLoading: boolean
