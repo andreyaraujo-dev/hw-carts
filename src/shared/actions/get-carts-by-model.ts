@@ -1,17 +1,13 @@
-import { ENV_KEY_NAME, EnvironmentService } from '@/shared/services/environment'
-import { createAxiosInstance } from '@/shared/services/axios'
-import { Cart } from '../types'
-
-const baseUrl = EnvironmentService.Instance.getKeyVault(
-  ENV_KEY_NAME.nextPublicApiUrl
-)
-const api = createAxiosInstance(baseUrl)
+import { Cart } from '@/types'
+import { ApiHttpClientService } from '@/shared/services/api-http-client/api-http-client.service'
 
 export async function getCartsByModel(
   model: string,
   userEmail?: string
 ): Promise<Cart[]> {
-  const { data } = await api.get<Cart[]>(
+  const apiHttpClientService = new ApiHttpClientService()
+
+  const { data } = await apiHttpClientService.get<Cart[]>(
     `/cart?userEmail=${userEmail}&model=${model}`
   )
   return data

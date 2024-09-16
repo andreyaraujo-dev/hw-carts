@@ -1,13 +1,9 @@
-import { Cart } from '../types'
-import { ENV_KEY_NAME, EnvironmentService } from '@/shared/services/environment'
-import { createAxiosInstance } from '@/shared/services/axios'
-
-const baseUrl = EnvironmentService.Instance.getKeyVault(
-  ENV_KEY_NAME.nextPublicApiUrl
-)
-const api = createAxiosInstance(baseUrl)
+import { Cart } from '@/types'
+import { ApiHttpClientService } from '@/shared/services/api-http-client/api-http-client.service'
 
 export async function deleteCart(id: string): Promise<Cart> {
-  const { data } = await api.delete<Cart>(`/cart/${id}`)
+  const apiHttpClientService = new ApiHttpClientService()
+
+  const { data } = await apiHttpClientService.delete<Cart>(`/cart/${id}`)
   return data
 }

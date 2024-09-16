@@ -1,16 +1,12 @@
-import { Cart, UpdateCartInput } from '../types'
-import { ENV_KEY_NAME, EnvironmentService } from '@/shared/services/environment'
-import { createAxiosInstance } from '@/shared/services/axios'
-
-const baseUrl = EnvironmentService.Instance.getKeyVault(
-  ENV_KEY_NAME.nextPublicApiUrl
-)
-const api = createAxiosInstance(baseUrl)
+import { Cart, UpdateCartInput } from '@/types'
+import { ApiHttpClientService } from '@/shared/services/api-http-client/api-http-client.service'
 
 export async function updateCart(data: UpdateCartInput): Promise<Cart> {
-  const { data: responseData } = await api.patch<Cart>(
-    `/cart/${data._id}`,
-    data
-  )
+  const apiHttpClientService = new ApiHttpClientService()
+
+  const { data: responseData } = await apiHttpClientService.patch<
+    UpdateCartInput,
+    Cart
+  >(`/cart/${data._id}`, data)
   return responseData
 }
