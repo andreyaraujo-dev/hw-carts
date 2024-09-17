@@ -18,7 +18,7 @@ export function CartCard({ cart }: CartCardProps) {
   return (
     <>
       <Card
-        className="w-60 h-72 p-2 hover:cursor-pointer hover:bg-zinc-900 transition-all"
+        className="w-60 h-72 p-2 hover:cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all"
         onClick={() => setOpenDialogDetails(true)}
       >
         <CardContent className="flex flex-col justify-between p-0 w-full h-full">

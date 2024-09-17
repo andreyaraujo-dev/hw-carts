@@ -31,8 +31,8 @@ export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
     <>
       {isLoading ? (
         <>
-          <Skeleton className="w-60 h-72 m-2 bg-zinc-700" />
-          <Skeleton className="w-60 h-72 m-2 bg-zinc-700" />
+          <Skeleton className="w-60 h-72 m-2 dark:bg-zinc-700 bg-zinc-100" />
+          <Skeleton className="w-60 h-72 m-2 dark:bg-zinc-700 bg-zinc-100" />
         </>
       ) : carts && carts?.length > 0 ? (
         <>
@@ -40,7 +40,7 @@ export function Carts({ isLoading, carts, pageToRedirect }: CartsProps) {
             <CartCard key={cart._id} cart={cart} />
           ))}
           <Link href={pageToRedirect}>
-            <Card className="w-60 h-72 p-2 hover:cursor-pointer hover:bg-zinc-900 transition-all flex items-center justify-center text-base">
+            <Card className="w-60 h-72 p-2 hover:cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all flex items-center justify-center text-base">
               <p>Ver mais</p>
             </Card>
           </Link>
