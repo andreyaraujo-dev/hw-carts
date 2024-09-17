@@ -37,7 +37,12 @@ export function DialogCustom({
         </DialogHeader>
         <DialogFooter className="flex flex-col space-y-2 md:space-y-0">
           <Button onClick={onCancel}>Cancelar</Button>
-          <Button variant="secondary" onClick={onConfirm} disabled={isLoading}>
+          <Button
+            variant="secondary"
+            className="hover:bg-zinc-200 dark:hover:bg-zinc-900"
+            onClick={onConfirm}
+            disabled={isLoading}
+          >
             {isLoading ? <CircularLoader /> : 'Confirmar'}
           </Button>
         </DialogFooter>

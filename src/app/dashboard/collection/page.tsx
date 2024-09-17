@@ -205,7 +205,7 @@ export default function Collection() {
               <Button
                 type="submit"
                 variant="default"
-                className="bg-blue-600 text-white py-2 px-4 h-12"
+                className="bg-blue-600 text-white py-2 px-4 h-12 hover:bg-blue-800"
                 disabled={!searchForm.getValues('model')}
               >
                 <Search size={15} />
@@ -215,7 +215,7 @@ export default function Collection() {
 
           <Button
             variant="outline"
-            className="h-12 text-base"
+            className="h-12 text-base bg-zinc-500 hover:bg-zinc-600 hover:text-zinc-100 text-zinc-100 dark:bg-zinc-700 dark:hover:bg-zinc-800"
             type="button"
             onClick={handleClearFilters}
           >
@@ -226,7 +226,7 @@ export default function Collection() {
         <Link href="/dashboard/collection/add">
           <Button
             variant="secondary"
-            className="text-white font-medium text-base h-12 w-full "
+            className="text-white font-medium text-base h-12 w-full bg-blue-800 hover:bg-blue-900"
           >
             Adicionar
           </Button>

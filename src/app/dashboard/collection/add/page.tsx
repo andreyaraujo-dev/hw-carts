@@ -335,7 +335,7 @@ export default function AddCart() {
           </Button>
           <Button
             onClick={() => router.back()}
-            className="text-white font-medium text-base w-full"
+            className="dark:text-white font-medium text-base w-full dark:bg-transparent dark:hover:bg-zinc-900 bg-zinc-200 hover:bg-zinc-300 text-zinc-800"
             variant="outline"
           >
             Cancelar
