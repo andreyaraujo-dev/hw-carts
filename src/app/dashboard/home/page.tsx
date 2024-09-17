@@ -3,7 +3,7 @@
 import {
   useCarts,
   useFavoritesCarts
-} from '@/services/react-query/hooks/useCarts'
+} from '@/shared/services/react-query/hooks/useCarts'
 import { useSession } from 'next-auth/react'
 import { Carts } from './components/Carts'
 
@@ -19,7 +19,9 @@ export default function Home() {
   return (
     <div className="flex w-full h-full p-6 flex-col space-y-5">
       <div className="w-full">
-        <h2 className="font-bold text-3xl mb-3">Favoritos</h2>
+        <h2 className="font-bold text-3xl mb-3 text-zinc-600 dark:text-zinc-100">
+          Favoritos
+        </h2>
         <div className="md:max-w-6xl auto-cols-max grid grid-flow-col grid-rows-1 gap-3 overflow-x-scroll pb-3 scrollbar scrollbar-h-2 scrollbar-thumb-rounded-full scrollbar-thumb-accent">
           <Carts
             isLoading={isLoadingFavorites}
@@ -30,7 +32,9 @@ export default function Home() {
       </div>
 
       <div className="w-full mb-3">
-        <h2 className="font-bold text-3xl mb-3">Coleção</h2>
+        <h2 className="font-bold text-3xl mb-3 text-zinc-600 dark:text-zinc-100">
+          Coleção
+        </h2>
         <div className="md:max-w-6xl auto-cols-max grid grid-flow-col grid-rows-1 gap-3 overflow-x-scroll pb-3 scrollbar scrollbar-h-2 scrollbar-thumb-rounded-full scrollbar-thumb-accent">
           <Carts
             isLoading={isLoading}

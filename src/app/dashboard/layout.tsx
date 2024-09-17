@@ -1,6 +1,6 @@
-import { AsideMenu } from '@/components/AsideMenu'
-import { Footer } from '@/components/Footer'
-import { Header } from '@/components/Header'
+import { AsideMenu } from '@/shared/components/AsideMenu'
+import { Footer } from '@/shared/components/Footer'
+import { Header } from '@/shared/components/Header'
 
 export default function RootLayout({
   children

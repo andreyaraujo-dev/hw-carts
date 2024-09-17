@@ -1,14 +1,23 @@
 'use client'
 
-import { Container } from '@/components/Container'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Container } from '@/shared/components/Container'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from '@/shared/components/ui/tabs'
+import { Card, CardContent, CardFooter } from '@/shared/components/ui/card'
 import { useSession } from 'next-auth/react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
-import { Cart } from '@/@types/carts'
-import { useCarts } from '@/services/react-query/hooks/useCarts'
+import { useCarts } from '@/shared/services/react-query/hooks/useCarts'
+import { Cart } from '@/types'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from '@/shared/components/ui/avatar'
+import { Button } from '@/shared/components/ui/button'
 
 export default function Profile() {
   const { data: session } = useSession()

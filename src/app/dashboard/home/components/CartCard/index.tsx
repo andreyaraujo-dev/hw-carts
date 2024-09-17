@@ -1,8 +1,8 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent } from '@/shared/components/ui/card'
 import { ImageOff, Star } from 'lucide-react'
-import { DialogDetailsCart } from '@/components/DialogDetailsCart'
+import { Cart } from '@/types'
 import { useState } from 'react'
-import { Cart } from '@/@types/carts'
+import { DialogDetailsCart } from '@/shared/components/DialogDetailsCart'
 
 interface CartCardProps {
   cart: Cart
@@ -18,7 +18,7 @@ export function CartCard({ cart }: CartCardProps) {
   return (
     <>
       <Card
-        className="w-60 h-72 p-2 hover:cursor-pointer hover:bg-zinc-900 transition-all"
+        className="w-60 h-72 p-2 hover:cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all"
         onClick={() => setOpenDialogDetails(true)}
       >
         <CardContent className="flex flex-col justify-between p-0 w-full h-full">

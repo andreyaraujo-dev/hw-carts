@@ -11,8 +11,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
+} from '@/shared/components/ui/select'
+import { Button } from '@/shared/components/ui/button'
 import { useMediaQuery } from 'usehooks-ts'
 
 interface DataTablePaginationProps<TData> {

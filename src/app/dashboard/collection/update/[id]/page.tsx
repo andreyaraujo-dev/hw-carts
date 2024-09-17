@@ -1,23 +1,8 @@
 'use client'
 
-import { Container } from '@/components/Container'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useSession } from 'next-auth/react'
-import { CartDataForm, cartDataFormSchema } from '../../schemas/addCart'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
-import { UpdateCartInput } from '@/@types/updateCartInput'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/Loading/Spinner'
-import {
-  useCartById,
-  useUpdateCart
-} from '@/services/react-query/hooks/useCarts'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@/shared/components/ui/skeleton'
 import { useEffect } from 'react'
 import {
   Form,
@@ -26,26 +11,41 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form'
+} from '@/shared/components/ui/form'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
+} from '@/shared/components/ui/popover'
+import { cn } from '@/shared/lib/utils'
 import { CalendarIcon } from 'lucide-react'
-import { Calendar } from '@/components/ui/calendar'
-import { formatCurrency, formatCurrencyOnKeyUp } from '@/utils/functions'
-import { ContentHeader } from '@/components/ContentHeader'
-import { useToast } from '@/components/ui/use-toast'
+import { Calendar } from '@/shared/components/ui/calendar'
+import { formatCurrency, formatCurrencyOnKeyUp } from '@/shared/utils/functions'
+import { ContentHeader } from '@/shared/components/ContentHeader'
+import { useToast } from '@/shared/components/ui/use-toast'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
+} from '@/shared/components/ui/select'
+import { Textarea } from '@/shared/components/ui/textarea'
+import { useRouter } from 'next/navigation'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { CartDataForm, cartDataFormSchema } from '../../schemas/addCart'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useSession } from 'next-auth/react'
+import {
+  useCartById,
+  useUpdateCart
+} from '@/shared/services/react-query/hooks/useCarts'
+import { UpdateCartInput } from '@/types'
+import { Container } from '@/shared/components/Container'
+import { Card, CardContent, CardFooter } from '@/shared/components/ui/card'
+import { Input } from '@/shared/components/ui/input'
+import { Button } from '@/shared/components/ui/button'
+import { Spinner } from '@/shared/components/Loading/Spinner'
 
 interface UpdateCartProps {
   params: { id: string }
@@ -299,7 +299,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                     <FormField
                       control={form.control}
                       name="image"
-                      render={({ field: { value, onChange, ...field } }) => (
+                      render={({ field: { onChange, ...field } }) => (
                         <FormItem className="w-full">
                           <FormLabel>Imagem do carro</FormLabel>
                           <FormControl>
@@ -358,7 +358,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
                           <FormLabel>Observações</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Adicione alguma obeserção ou detalhes do carro"
+                              placeholder="Adicione alguma observação ou detalhes do carro"
                               {...field}
                               value={cartData?.comments}
                               onChange={(event) =>
@@ -390,7 +390,7 @@ export default function UpdateCart({ params }: UpdateCartProps) {
           </Button>
           <Button
             onClick={() => router.back()}
-            className="text-white font-medium text-base w-full"
+            className="dark:text-white font-medium text-base w-full dark:bg-transparent dark:hover:bg-zinc-900 bg-zinc-200 hover:bg-zinc-300 text-zinc-800"
             variant="outline"
           >
             Cancelar

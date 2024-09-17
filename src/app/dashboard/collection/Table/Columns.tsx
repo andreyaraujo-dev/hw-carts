@@ -1,6 +1,6 @@
-import { Cart } from '@/@types/carts'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Cart } from '@/shared/types'
+import { Button } from '@/shared/components/ui/button'
+import { Checkbox } from '@/shared/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,11 +8,11 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+} from '@/shared/components/ui/dropdown-menu'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal, Star } from 'lucide-react'
 import { DataTableColumnHeader } from './DataTableColumnHeader'
-import { DialogDetailsCart } from '@/components/DialogDetailsCart'
+import { DialogDetailsCart } from '@/shared/components/DialogDetailsCart'
 import { DropdownMenuItemDelete } from './DropdownMenuItemDelete'
 import { DropdownMenuItemCopy } from './DropdownMenuItemCopy'
 import Link from 'next/link'

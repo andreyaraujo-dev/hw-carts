@@ -1,16 +1,16 @@
 'use client'
 
-import { Container } from '@/components/Container'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+import { Container } from '@/shared/components/Container'
+import { Button } from '@/shared/components/ui/button'
+import { Card, CardContent, CardFooter } from '@/shared/components/ui/card'
+import { Input } from '@/shared/components/ui/input'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CartDataForm, cartDataFormSchema } from '../schemas/addCart'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
-import { useAddCart } from '@/services/react-query/hooks/useCarts'
-import { Spinner } from '@/components/Loading/Spinner'
+import { useAddCart } from '@/shared/services/react-query/hooks/useCarts'
+import { Spinner } from '@/shared/components/Loading/Spinner'
 import {
   Form,
   FormControl,
@@ -18,28 +18,28 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form'
+} from '@/shared/components/ui/form'
 import { CalendarIcon } from 'lucide-react'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
-import { cn } from '@/lib/utils'
+} from '@/shared/components/ui/popover'
+import { Calendar } from '@/shared/components/ui/calendar'
+import { cn } from '@/shared/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { formatCurrencyOnKeyUp } from '@/utils/functions'
-import { ContentHeader } from '@/components/ContentHeader'
-import { useToast } from '@/components/ui/use-toast'
-import { Textarea } from '@/components/ui/textarea'
+import { formatCurrencyOnKeyUp } from '@/shared/utils/functions'
+import { ContentHeader } from '@/shared/components/ContentHeader'
+import { useToast } from '@/shared/components/ui/use-toast'
+import { Textarea } from '@/shared/components/ui/textarea'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/components/ui/select'
+} from '@/shared/components/ui/select'
 
 const defaultValues = {
   model: '',
@@ -335,7 +335,7 @@ export default function AddCart() {
           </Button>
           <Button
             onClick={() => router.back()}
-            className="text-white font-medium text-base w-full"
+            className="dark:text-white font-medium text-base w-full dark:bg-transparent dark:hover:bg-zinc-900 bg-zinc-200 hover:bg-zinc-300 text-zinc-800"
             variant="outline"
           >
             Cancelar

@@ -4,12 +4,12 @@ import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { Columns3 } from 'lucide-react'
 import { Table } from '@tanstack/react-table'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent
-} from '@/components/ui/dropdown-menu'
+} from '@/shared/components/ui/dropdown-menu'
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>

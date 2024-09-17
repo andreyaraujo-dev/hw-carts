@@ -1,5 +1,5 @@
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { useToast } from '@/components/ui/use-toast'
+import { DropdownMenuItem } from '@/shared/components/ui/dropdown-menu'
+import { useToast } from '@/shared/components/ui/use-toast'
 
 interface DropdownMenuItemCopyProps {
   model: string
