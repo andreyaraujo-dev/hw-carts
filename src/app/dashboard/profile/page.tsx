@@ -8,7 +8,7 @@ import {
   TabsTrigger
 } from '@/shared/components/ui/tabs'
 import { Card, CardContent, CardFooter } from '@/shared/components/ui/card'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useCarts } from '@/shared/services/react-query/hooks/useCarts'
 import { Cart } from '@/types'
@@ -110,6 +110,7 @@ export default function Profile() {
                   <Button
                     variant="outline"
                     className="mt-2 border-red-400 hover:bg-red-400"
+                    onClick={() => signOut({ callbackUrl: '/' })}
                   >
                     Sair
                   </Button>
