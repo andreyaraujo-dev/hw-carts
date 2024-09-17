@@ -1,35 +1,28 @@
+import { ENV_KEY_NAME } from '@/shared/services/environment/keys-envs.const'
+
 export class EnvironmentService {
   private static _instance: EnvironmentService
-  private cacheKeys: Record<string, string> = {}
+  private readonly variables: Record<string, string>
 
-  constructor() {}
+  private constructor() {
+    this.variables = {
+      [ENV_KEY_NAME.authUrl]: process.env.AUTH_URL || '',
+      [ENV_KEY_NAME.authSecret]: process.env.AUTH_SECRET || '',
+      [ENV_KEY_NAME.authGoogleId]: process.env.AUTH_GOOGLE_ID || '',
+      [ENV_KEY_NAME.authGoogleSecret]: process.env.AUTH_GOOGLE_SECRET || '',
+      [ENV_KEY_NAME.nextPublicApiUrl]: process.env.NEXT_PUBLIC_API_URL || '',
+      [ENV_KEY_NAME.jwtSecret]: process.env.JWT_SECRET || ''
+    }
+  }
 
   public static get Instance() {
-    return this._instance || (this._instance = new this())
-  }
-
-  private setCacheKey(key: string, value: string) {
-    this.cacheKeys[key] = value
-  }
-
-  private getCacheKey(key: string) {
-    return this.cacheKeys[key]
-  }
-
-  logAllCache() {
-    console.warn('Showing all cache --> ', this.cacheKeys)
-  }
-
-  async getKeyVault(key: string) {
-    const envCache = this.getCacheKey(key)
-    if (envCache) return envCache
-
-    const enValue = process.env[key]
-    if (enValue) {
-      this.setCacheKey(key, enValue)
-      return enValue
+    if (!this._instance) {
+      this._instance = new EnvironmentService()
     }
+    return this._instance
+  }
 
-    return ''
+  public get(key: ENV_KEY_NAME): string {
+    return this.variables[key] || ''
   }
 }

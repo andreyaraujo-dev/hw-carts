@@ -1,6 +1,7 @@
 import { HttpClient } from '@/shared/services/http-client/http-client'
 import { AxiosRequestHeaders } from 'axios'
 import { getSession } from 'next-auth/react'
+import { ENV_KEY_NAME, EnvironmentService } from '@/shared/services/environment'
 
 export class ApiHttpClientService extends HttpClient {
   constructor() {
@@ -23,8 +24,7 @@ export class ApiHttpClientService extends HttpClient {
   }
 
   private async setup() {
-    // const envService = EnvironmentService.Instance
-    // const url = await envService.getKeyVault(ENV_KEY_NAME.nextPublicApiUrl)
-    this.globalConfig.baseURL = process.env.NEXT_PUBLIC_API_URL
+    const envService = EnvironmentService.Instance
+    this.globalConfig.baseURL = envService.get(ENV_KEY_NAME.nextPublicApiUrl)
   }
 }
