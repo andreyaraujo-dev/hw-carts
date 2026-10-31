@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HW Carts
 
-## Getting Started
+Frontend web para visualização e gerenciamento de carrinhos, desenvolvido com Next.js e integrado à API `microservice-hw-carts`.
 
-First, run the development server:
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![Next.js](https://img.shields.io/badge/Next.js-14%2B-000000?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+
+## Visão geral
+
+O sistema oferece uma interface autenticada para consultar a coleção, adicionar carrinhos, editar registros, marcar favoritos e remover itens. A autenticação usa NextAuth e o backend é configurado por `NEXT_PUBLIC_API_URL`.
+
+## Stack
+
+- Next.js e React
+- TypeScript
+- NextAuth
+- Tailwind CSS e componentes Radix/shadcn
+- Integração HTTP com a API de carrinhos
+
+## Configuração local
+
+Pré-requisitos: Node.js 20+, a API de carrinhos em execução e credenciais OAuth do Google se esse provedor for utilizado.
+
+```bash
+npm install
+cp .env.example .env.local
+```
+
+Revise `AUTH_URL`, `AUTH_SECRET`, `NEXT_PUBLIC_API_URL`, `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`.
+
+## Executando
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse `http://localhost:3000`. Para uma versão de produção:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Fluxo principal
 
-## Learn More
+1. Acesse a tela inicial e faça login.
+2. Abra o dashboard para consultar os carrinhos.
+3. Use a tela de inclusão para cadastrar um carrinho, incluindo imagem quando necessário.
+4. Edite, favorite ou exclua registros pela tabela da coleção.
 
-To learn more about Next.js, take a look at the following resources:
+O guia detalhado está em [`docs/USAGE.md`](docs/USAGE.md). A API correspondente está no projeto [`microservice-hw-carts`](../microservice-hw-carts).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Screenshots
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Coloque os prints do frontend em [`assets/screenshots/`](assets/screenshots/). Exemplo:
 
-## Deploy on Vercel
+```md
+<!-- ![Dashboard de carrinhos](assets/screenshots/dashboard.png) -->
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Desenvolvimento
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+npm run lint:fix
+npm run format
+```
